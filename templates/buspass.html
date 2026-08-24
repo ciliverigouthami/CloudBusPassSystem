@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Bus Pass - Cloud Bus Pass System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <header class="main-header">
+
+        <div class="header-content">
+
+            <div class="logo">
+                🚌
+                <span>Cloud Bus Pass</span>
+            </div>
+
+            <a href="/dashboard"
+               class="header-logout">
+
+                ← Dashboard
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- MAIN -->
+
+    <main class="buspass-main">
+
+
+        <div class="buspass-page-heading">
+
+            <p>
+                DIGITAL TRANSPORT PASS
+            </p>
+
+            <h1>
+                🎫 My Bus Pass
+            </h1>
+
+            <span>
+                Your approved digital bus pass
+            </span>
+
+        </div>
+
+
+
+        <!-- BUS PASS CARD -->
+
+        <div class="buspass-card">
+
+
+            <!-- PASS HEADER -->
+
+            <div class="buspass-header">
+
+                <div>
+
+                    <span class="buspass-label">
+                        CLOUD BUS PASS SYSTEM
+                    </span>
+
+                    <h2>
+                        🚌 STUDENT BUS PASS
+                    </h2>
+
+                </div>
+
+
+                <div class="buspass-approved">
+
+                    ✓ APPROVED
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PASS ID -->
+
+            <div class="buspass-id">
+
+                <span>
+                    PASS ID
+                </span>
+
+                <strong>
+                    CBP-{{ application.id }}
+                </strong>
+
+            </div>
+
+
+
+            <!-- PASSENGER -->
+
+            <div class="passenger-section">
+
+                <div class="passenger-icon">
+                    👤
+                </div>
+
+
+                <div>
+
+                    <span>
+                        PASSENGER NAME
+                    </span>
+
+                    <h3>
+                        {{ application.name }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- DETAILS -->
+
+            <div class="buspass-details">
+
+
+                <div class="buspass-detail">
+
+                    <span>
+                        AGE
+                    </span>
+
+                    <strong>
+                        {{ application.age }}
+                    </strong>
+
+                </div>
+
+
+                <div class="buspass-detail">
+
+                    <span>
+                        GENDER
+                    </span>
+
+                    <strong>
+                        {{ application.gender }}
+                    </strong>
+
+                </div>
+
+
+                <div class="buspass-detail">
+
+                    <span>
+                        PASS TYPE
+                    </span>
+
+                    <strong>
+                        {{ application.pass_type }}
+                    </strong>
+
+                </div>
+
+
+                <div class="buspass-detail">
+
+                    <span>
+                        START DATE
+                    </span>
+
+                    <strong>
+                        {{ application.start_date }}
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ROUTE -->
+
+            <div class="buspass-route">
+
+                <div>
+
+                    <span>
+                        FROM
+                    </span>
+
+                    <strong>
+                        {{ application.source }}
+                    </strong>
+
+                </div>
+
+
+                <div class="route-arrow-large">
+                    →
+                </div>
+
+
+                <div>
+
+                    <span>
+                        TO
+                    </span>
+
+                    <strong>
+                        {{ application.destination }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- VALIDITY -->
+
+            <div class="buspass-validity">
+
+                <div>
+
+                    <span>
+                        STATUS
+                    </span>
+
+                    <strong>
+                        ✓ VALID
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        ISSUED BY
+                    </span>
+
+                    <strong>
+                        Cloud Bus Pass Administration
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- FOOTER -->
+
+            <div class="buspass-card-footer">
+
+                <span>
+                    🎫 This is a digitally approved bus pass.
+                </span>
+
+                <span>
+                    CBP-{{ application.id }}
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- BUTTONS -->
+
+        <div class="buspass-actions">
+
+            <a href="/dashboard"
+               class="buspass-back-button">
+
+                ← Back to Dashboard
+
+            </a>
+
+            <button
+                onclick="window.print()"
+                class="buspass-print-button">
+
+                🖨️ Print Bus Pass
+
+            </button>
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- FOOTER -->
+
+    <footer class="main-footer">
+
+        <div class="footer-content">
+
+            <div>
+
+                <strong>
+                    🚌 Cloud Bus Pass System
+                </strong>
+
+                <p>
+                    Smart and simple digital bus pass management.
+                </p>
+
+            </div>
+
+
+            <div class="footer-right">
+
+                <p>
+                    © 2026 Cloud Bus Pass System
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+</body>
+
+</html>

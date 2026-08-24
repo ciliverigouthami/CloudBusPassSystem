@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard - Cloud Bus Pass System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header class="top-header">
+
+        <div class="logo">
+            🚌 Cloud Bus Pass
+        </div>
+
+        <div>
+
+            <span class="admin-welcome">
+                Welcome, Admin
+            </span>
+
+            <a href="/admin-logout"
+               class="logout-btn">
+                🚪 Logout
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         MAIN CONTAINER
+    ========================== -->
+
+    <div class="admin-container">
+
+
+        <!-- =========================
+             PAGE TITLE
+        ========================== -->
+
+        <div class="admin-title">
+
+            <h1>Admin Dashboard</h1>
+
+            <p>
+                Manage bus pass applications and ticket bookings.
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             STATISTICS
+        ========================== -->
+
+        <div class="admin-stats">
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📋
+                </div>
+
+                <div>
+
+                    <h3>
+                        {{ applications|length }}
+                    </h3>
+
+                    <p>
+                        Bus Pass Applications
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🎫
+                </div>
+
+                <div>
+
+                    <h3>
+                        {{ bookings|length }}
+                    </h3>
+
+                    <p>
+                        Ticket Bookings
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             BUS PASS APPLICATIONS
+        ========================== -->
+
+        <section class="admin-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        📋 Bus Pass Applications
+                    </h2>
+
+                    <p>
+                        Review and manage submitted bus pass applications.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% if applications %}
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Name</th>
+
+                            <th>Age</th>
+
+                            <th>Gender</th>
+
+                            <th>Source</th>
+
+                            <th>Destination</th>
+
+                            <th>Pass Type</th>
+
+                            <th>Start Date</th>
+
+                            <th>Status</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for application in applications %}
+
+                        <tr>
+
+                            <td>
+                                #{{ application.id }}
+                            </td>
+
+                            <td>
+                                {{ application.name }}
+                            </td>
+
+                            <td>
+                                {{ application.age }}
+                            </td>
+
+                            <td>
+                                {{ application.gender }}
+                            </td>
+
+                            <td>
+                                {{ application.source }}
+                            </td>
+
+                            <td>
+                                {{ application.destination }}
+                            </td>
+
+                            <td>
+                                {{ application.pass_type }}
+                            </td>
+
+                            <td>
+                                {{ application.start_date }}
+                            </td>
+
+                            <td>
+
+                                {% if application.status_record %}
+
+                                    {% if application.status_record.status == "Approved" %}
+
+                                        <span class="status approved">
+                                            Approved
+                                        </span>
+
+                                    {% elif application.status_record.status == "Rejected" %}
+
+                                        <span class="status rejected">
+                                            Rejected
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="status submitted">
+                                            Submitted
+                                        </span>
+
+                                    {% endif %}
+
+                                {% else %}
+
+                                    <span class="status submitted">
+                                        Submitted
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                <div class="action-buttons">
+
+                                    <a href="/admin/approve/{{ application.id }}"
+                                       class="approve-btn">
+
+                                        ✓ Approve
+
+                                    </a>
+
+
+                                    <a href="/admin/reject/{{ application.id }}"
+                                       class="reject-btn">
+
+                                        ✕ Reject
+
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+                <div class="empty-box">
+
+                    <div class="empty-icon">
+                        📋
+                    </div>
+
+                    <h3>
+                        No Bus Pass Applications
+                    </h3>
+
+                    <p>
+                        There are currently no bus pass applications.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- =========================
+             TICKET BOOKINGS
+        ========================== -->
+
+        <section class="admin-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        🎫 Ticket Bookings
+                    </h2>
+
+                    <p>
+                        View all tickets booked by users.
+                    </p>
+
+                </div>
+
+                <div class="booking-count">
+
+                    {{ bookings|length }} Booking(s)
+
+                </div>
+
+            </div>
+
+
+            {% if bookings %}
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Booking ID</th>
+
+                            <th>Source</th>
+
+                            <th>Destination</th>
+
+                            <th>Travel Date</th>
+
+                            <th>Bus</th>
+
+                            <th>Passengers</th>
+
+                            <th>Seat Type</th>
+
+                            <th>Booking Date</th>
+
+                            <th>Status</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for booking in bookings %}
+
+                        <tr>
+
+                            <td>
+
+                                <strong>
+                                    {{ booking.booking_id }}
+                                </strong>
+
+                            </td>
+
+                            <td>
+
+                                📍 {{ booking.source }}
+
+                            </td>
+
+                            <td>
+
+                                📍 {{ booking.destination }}
+
+                            </td>
+
+                            <td>
+
+                                📅 {{ booking.travel_date }}
+
+                            </td>
+
+                            <td>
+
+                                🚌 {{ booking.bus }}
+
+                            </td>
+
+                            <td>
+
+                                {{ booking.passengers }}
+
+                            </td>
+
+                            <td>
+
+                                {{ booking.seat_type }}
+
+                            </td>
+
+                            <td>
+
+                                {{ booking.booking_date }}
+
+                            </td>
+
+                            <td>
+
+                                {% if booking.booking_status == "Confirmed" %}
+
+                                    <span class="status approved">
+                                        ✓ Confirmed
+                                    </span>
+
+                                {% elif booking.booking_status == "Cancelled" %}
+
+                                    <span class="status rejected">
+                                        ✕ Cancelled
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status submitted">
+                                        {{ booking.booking_status }}
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+                <div class="empty-box">
+
+                    <div class="empty-icon">
+                        🎫
+                    </div>
+
+                    <h3>
+                        No Ticket Bookings Yet
+                    </h3>
+
+                    <p>
+                        When users book tickets, their bookings will appear here.
+                    </p>
+
+                    <a href="/"
+                       class="home-btn">
+
+                        Go to Home
+
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+    </div>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer class="admin-footer">
+
+        <p>
+            © 2026 Cloud Bus Pass System
+        </p>
+
+        <p>
+            Smart • Simple • Digital
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Book Ticket - Cloud Bus Pass System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <header class="main-header">
+
+        <div class="header-content">
+
+            <div class="logo">
+                🚌
+                <span>Cloud Bus Pass</span>
+            </div>
+
+            <a href="/dashboard"
+               class="header-logout">
+
+                ← Dashboard
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- MAIN -->
+
+    <main class="ticket-booking-main">
+
+
+        <!-- PAGE HEADING -->
+
+        <div class="ticket-page-heading">
+
+            <div class="ticket-page-icon">
+                🎟️
+            </div>
+
+            <p>
+                ONLINE TICKET BOOKING
+            </p>
+
+            <h1>
+                Book Your Bus Ticket
+            </h1>
+
+            <span>
+                Select your journey details and book your ticket.
+            </span>
+
+        </div>
+
+
+
+        <!-- BOOKING FORM -->
+
+        <form method="POST"
+              action="/book-ticket"
+              class="ticket-booking-form">
+
+
+            <!-- JOURNEY DETAILS -->
+
+            <section class="ticket-form-section">
+
+                <div class="ticket-section-heading">
+
+                    <div class="ticket-section-number">
+                        1
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Journey Details
+                        </h2>
+
+                        <p>
+                            Enter your travel information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="ticket-form-grid">
+
+
+                    <!-- FROM -->
+
+                    <div class="ticket-form-group">
+
+                        <label for="source">
+                            📍 From
+                        </label>
+
+                        <input
+                            type="text"
+                            id="source"
+                            name="source"
+                            placeholder="Enter starting point"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- TO -->
+
+                    <div class="ticket-form-group">
+
+                        <label for="destination">
+                            📍 To
+                        </label>
+
+                        <input
+                            type="text"
+                            id="destination"
+                            name="destination"
+                            placeholder="Enter destination"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- DATE -->
+
+                    <div class="ticket-form-group">
+
+                        <label for="travel_date">
+                            📅 Travel Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="travel_date"
+                            name="travel_date"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- BUS -->
+
+                    <div class="ticket-form-group">
+
+                        <label for="bus">
+                            🚌 Select Bus
+                        </label>
+
+                        <select
+                            id="bus"
+                            name="bus"
+                            required
+                        >
+
+                            <option value="">
+                                Select a bus
+                            </option>
+
+                            <option value="City Express">
+                                City Express
+                            </option>
+
+                            <option value="Metro Express">
+                                Metro Express
+                            </option>
+
+                            <option value="Super Fast">
+                                Super Fast
+                            </option>
+
+                            <option value="Deluxe">
+                                Deluxe
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- TICKET DETAILS -->
+
+            <section class="ticket-form-section">
+
+                <div class="ticket-section-heading">
+
+                    <div class="ticket-section-number">
+                        2
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Ticket Details
+                        </h2>
+
+                        <p>
+                            Choose the number of tickets.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="ticket-form-grid">
+
+
+                    <!-- PASSENGERS -->
+
+                    <div class="ticket-form-group">
+
+                        <label for="passengers">
+                            👥 Number of Tickets
+                        </label>
+
+                        <select
+                            id="passengers"
+                            name="passengers"
+                            required
+                        >
+
+                            <option value="1">
+                                1 Ticket
+                            </option>
+
+                            <option value="2">
+                                2 Tickets
+                            </option>
+
+                            <option value="3">
+                                3 Tickets
+                            </option>
+
+                            <option value="4">
+                                4 Tickets
+                            </option>
+
+                            <option value="5">
+                                5 Tickets
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- SEAT TYPE -->
+
+                    <div class="ticket-form-group">
+
+                        <label for="seat_type">
+                            💺 Seat Type
+                        </label>
+
+                        <select
+                            id="seat_type"
+                            name="seat_type"
+                            required
+                        >
+
+                            <option value="Regular">
+                                Regular
+                            </option>
+
+                            <option value="Window">
+                                Window
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- NOTE -->
+
+            <div class="ticket-booking-note">
+
+                <span>
+                    ℹ️
+                </span>
+
+                <p>
+                    Please verify your journey details before
+                    confirming your booking.
+                </p>
+
+            </div>
+
+
+
+            <!-- BUTTON -->
+
+            <button
+                type="submit"
+                class="book-ticket-submit">
+
+                🎟️ Confirm Ticket Booking
+
+            </button>
+
+
+        </form>
+
+
+    </main>
+
+
+
+    <!-- FOOTER -->
+
+    <footer class="main-footer">
+
+        <div class="footer-content">
+
+            <div>
+
+                <strong>
+                    🚌 Cloud Bus Pass System
+                </strong>
+
+                <p>
+                    Smart and simple digital bus pass management.
+                </p>
+
+            </div>
+
+
+            <div class="footer-right">
+
+                <p>
+                    © 2026 Cloud Bus Pass System
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+</body>
+
+</html>
