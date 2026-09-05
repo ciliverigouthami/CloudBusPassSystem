@@ -1,0 +1,282 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Payment - Cloud Bus Pass System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header class="main-header">
+
+        <div class="header-content">
+
+            <div class="logo">
+                🚌 Cloud Bus Pass
+            </div>
+
+            <a href="/dashboard"
+               class="header-logout">
+                Dashboard
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- MAIN -->
+
+    <main class="application-main">
+
+        <div class="application-page-header">
+
+            <div class="application-page-icon">
+                💳
+            </div>
+
+            <h1>
+                Bus Pass Payment
+            </h1>
+
+            <p>
+                Complete your payment to submit your bus pass application.
+            </p>
+
+        </div>
+
+
+        <!-- ERROR -->
+
+        {% if error %}
+
+        <div style="
+            background: #ffe5e5;
+            color: #b00020;
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        ">
+
+            ⚠️ {{ error }}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- APPLICATION DETAILS -->
+
+        <div class="pass-card">
+
+            <h2>
+                🚌 Application Details
+            </h2>
+
+            <p>
+                <strong>Application ID:</strong>
+                {{ application.id }}
+            </p>
+
+            <p>
+                <strong>Name:</strong>
+                {{ application.name }}
+            </p>
+
+            <p>
+                <strong>Route:</strong>
+                {{ application.source }}
+                →
+                {{ application.destination }}
+            </p>
+
+            <p>
+                <strong>Pass Type:</strong>
+                {{ application.pass_type }}
+            </p>
+
+            <p>
+                <strong>Start Date:</strong>
+                {{ application.start_date }}
+            </p>
+
+        </div>
+
+
+        <!-- AMOUNT -->
+
+        {% if amount %}
+
+        <div style="
+            margin-top: 20px;
+            padding: 25px;
+            border-radius: 12px;
+            background: #f5f7fb;
+            text-align: center;
+            border: 1px solid #e1e5ec;
+        ">
+
+            <p style="margin-bottom: 8px;">
+                Total Route-Based Pass Fee
+            </p>
+
+            <h1 style="margin: 0;">
+                ₹{{ "%.2f"|format(amount) }}
+            </h1>
+
+            <p style="margin-top: 10px;">
+                {{ application.source }}
+                →
+                {{ application.destination }}
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- PAYMENT FORM -->
+
+        <form method="POST"
+              action="{{ url_for('payment', application_id=application.id) }}"
+              class="application-form"
+              style="margin-top: 20px;">
+
+            <section class="form-section">
+
+                <div class="form-section-title">
+
+                    <span class="form-number">
+                        1
+                    </span>
+
+                    <div>
+
+                        <h2>
+                            Select Payment Method
+                        </h2>
+
+                        <p>
+                            Choose your preferred payment method
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="payment_method">
+                        Payment Method
+                    </label>
+
+                    <select
+                        id="payment_method"
+                        name="payment_method"
+                        required>
+
+                        <option value="">
+                            Select Payment Method
+                        </option>
+
+                        <option value="UPI">
+                            📱 UPI
+                        </option>
+
+                        <option value="Debit Card">
+                            💳 Debit Card
+                        </option>
+
+                        <option value="Credit Card">
+                            💳 Credit Card
+                        </option>
+
+                        <option value="Net Banking">
+                            🏦 Net Banking
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </section>
+
+
+            <!-- DEMO PAYMENT -->
+
+            <section style="
+                margin-top: 20px;
+                padding: 18px;
+                border-radius: 10px;
+                background: #fff8e1;
+                border: 1px solid #ffe082;
+            ">
+
+                <strong>
+                    ⚠️ Demo Payment
+                </strong>
+
+                <p style="margin-bottom: 0;">
+                    This project currently uses a simulated payment.
+                    No real money will be charged.
+                </p>
+
+            </section>
+
+
+            <!-- SUBMIT -->
+
+            <section class="form-submit-section">
+
+                <button
+                    type="submit"
+                    class="submit-application-button">
+
+                    💳 Pay
+                    {% if amount %}
+                        ₹{{ "%.2f"|format(amount) }}
+                    {% endif %}
+
+                </button>
+
+            </section>
+
+        </form>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="main-footer">
+
+        <p>
+            © 2026 Cloud Bus Pass System
+        </p>
+
+        <p>
+            Smart • Simple • Digital
+        </p>
+
+    </footer>
+
+</body>
+
+</html>
+```

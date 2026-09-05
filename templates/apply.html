@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -58,6 +59,27 @@
         </div>
 
 
+        <!-- ERROR MESSAGE -->
+
+        {% if error %}
+
+        <div style="
+            background: #ffe5e5;
+            color: #b00020;
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        ">
+
+            ⚠️ {{ error }}
+
+        </div>
+
+        {% endif %}
+
+
         <!-- APPLICATION FORM -->
 
         <form method="POST"
@@ -91,6 +113,7 @@
 
 
                 <div class="form-grid">
+
 
                     <!-- NAME -->
 
@@ -195,6 +218,7 @@
 
                 <div class="form-grid">
 
+
                     <!-- SOURCE -->
 
                     <div class="form-group">
@@ -207,7 +231,7 @@
                             type="text"
                             id="source"
                             name="source"
-                            placeholder="Enter starting point"
+                            placeholder="Example: Hyderabad"
                             required>
 
                     </div>
@@ -225,10 +249,38 @@
                             type="text"
                             id="destination"
                             name="destination"
-                            placeholder="Enter destination"
+                            placeholder="Example: Secunderabad"
                             required>
 
                     </div>
+
+                </div>
+
+
+                <!-- AVAILABLE ROUTES -->
+
+                <div style="
+                    margin-top: 18px;
+                    padding: 16px;
+                    border-radius: 10px;
+                    background: #f5f7fb;
+                    border: 1px solid #e2e6ef;
+                ">
+
+                    <strong>
+                        🚌 Currently Supported Routes
+                    </strong>
+
+                    <p style="margin: 8px 0 0;">
+                        Hyderabad → Secunderabad |
+                        Hyderabad → Kukatpally |
+                        Hyderabad → Uppal |
+                        Hyderabad → LB Nagar |
+                        Secunderabad → Kukatpally |
+                        Secunderabad → Uppal |
+                        Secunderabad → LB Nagar |
+                        Hyderabad → Gachibowli
+                    </p>
 
                 </div>
 
@@ -261,6 +313,7 @@
 
 
                 <div class="form-grid">
+
 
                     <!-- PASS TYPE -->
 
@@ -314,6 +367,26 @@
 
                 </div>
 
+
+                <!-- PAYMENT INFORMATION -->
+
+                <div style="
+                    margin-top: 18px;
+                    padding: 16px;
+                    border-radius: 10px;
+                    background: #eef8ff;
+                    border: 1px solid #cfe9ff;
+                ">
+
+                    💳 <strong>Route-Based Pricing</strong>
+
+                    <p style="margin: 8px 0 0;">
+                        Your bus pass fee will be calculated automatically
+                        based on your selected route and pass type.
+                    </p>
+
+                </div>
+
             </section>
 
 
@@ -339,7 +412,7 @@
                     type="submit"
                     class="submit-application-button">
 
-                    🚌 Submit Bus Pass Application
+                    🚌 Continue to Payment
 
                 </button>
 
@@ -367,3 +440,4 @@
 </body>
 
 </html>
+```

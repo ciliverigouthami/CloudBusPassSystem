@@ -1,7 +1,12 @@
+
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import random
+from dotenv import load_dotenv
+from email_utils import send_email
+
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -72,6 +77,13 @@ class BusPass(db.Model):
         cascade="all, delete-orphan"
     )
 
+    payment = db.relationship(
+        "Payment",
+        backref="application",
+        uselist=False,
+        cascade="all, delete-orphan"
+    )
+
 
 # =========================================================
 # APPLICATION STATUS TABLE
@@ -92,6 +104,54 @@ class ApplicationStatus(db.Model):
         db.String(20),
         nullable=False,
         default="Submitted"
+    )
+
+
+# =========================================================
+# PAYMENT TABLE
+# =========================================================
+
+class Payment(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    application_id = db.Column(
+        db.Integer,
+        db.ForeignKey("bus_pass.id"),
+        nullable=False,
+        unique=True
+    )
+
+    user_id = db.Column(
+        db.Integer,
+        nullable=False
+    )
+
+    amount = db.Column(
+        db.Float,
+        nullable=False
+    )
+
+    payment_method = db.Column(
+        db.String(50),
+        nullable=False
+    )
+
+    transaction_id = db.Column(
+        db.String(100),
+        unique=True,
+        nullable=False
+    )
+
+    payment_status = db.Column(
+        db.String(30),
+        nullable=False,
+        default="Success"
+    )
+
+    payment_date = db.Column(
+        db.String(30),
+        nullable=False
     )
 
 
@@ -179,6 +239,82 @@ class TicketBooking(db.Model):
 
 
 # =========================================================
+# ROUTE-BASED PRICING
+# =========================================================
+
+ROUTE_PRICES = {
+
+    ("hyderabad", "secunderabad"): {
+        "Monthly": 300,
+        "Quarterly": 800,
+        "Yearly": 2800
+    },
+
+    ("hyderabad", "kukatpally"): {
+        "Monthly": 350,
+        "Quarterly": 950,
+        "Yearly": 3200
+    },
+
+    ("hyderabad", "uppal"): {
+        "Monthly": 350,
+        "Quarterly": 950,
+        "Yearly": 3200
+    },
+
+    ("hyderabad", "lb nagar"): {
+        "Monthly": 400,
+        "Quarterly": 1050,
+        "Yearly": 3600
+    },
+
+    ("secunderabad", "kukatpally"): {
+        "Monthly": 400,
+        "Quarterly": 1050,
+        "Yearly": 3600
+    },
+
+    ("secunderabad", "uppal"): {
+        "Monthly": 300,
+        "Quarterly": 800,
+        "Yearly": 2800
+    },
+
+    ("secunderabad", "lb nagar"): {
+        "Monthly": 450,
+        "Quarterly": 1200,
+        "Yearly": 4000
+    },
+
+    ("hyderabad", "gachibowli"): {
+        "Monthly": 500,
+        "Quarterly": 1300,
+        "Yearly": 4800
+    }
+}
+
+
+# =========================================================
+# GET ROUTE PRICE
+# =========================================================
+
+def get_route_price(source, destination, pass_type):
+
+    source_key = source.strip().lower()
+
+    destination_key = destination.strip().lower()
+
+    route = ROUTE_PRICES.get(
+        (source_key, destination_key)
+    )
+
+    if route is None:
+        return None
+
+    return route.get(pass_type)
+
+
+# =========================================================
 # CREATE DATABASE TABLES
 # =========================================================
 
@@ -199,6 +335,7 @@ with app.app_context():
         )
 
         db.session.add(default_admin)
+
         db.session.commit()
 
 
@@ -222,9 +359,13 @@ def register():
     if request.method == "POST":
 
         name = request.form["name"]
+
         email = request.form["email"]
+
         phone = request.form["phone"]
+
         password = request.form["password"]
+
         address = request.form["address"]
 
         existing_user = User.query.filter_by(
@@ -247,6 +388,7 @@ def register():
         )
 
         db.session.add(new_user)
+
         db.session.commit()
 
         return redirect(
@@ -268,6 +410,7 @@ def login():
     if request.method == "POST":
 
         email = request.form["email"]
+
         password = request.form["password"]
 
         user = User.query.filter_by(
@@ -277,7 +420,9 @@ def login():
         if user and user.password == password:
 
             session["user_id"] = user.id
+
             session["user_name"] = user.name
+
             session["user_email"] = user.email
 
             return redirect(
@@ -347,12 +492,40 @@ def apply():
     if request.method == "POST":
 
         name = request.form["name"]
+
         age = request.form["age"]
+
         gender = request.form["gender"]
+
         source = request.form["source"]
+
         destination = request.form["destination"]
+
         pass_type = request.form["pass_type"]
+
         start_date = request.form["start_date"]
+
+        # Check whether the selected route exists
+        route_price = get_route_price(
+            source,
+            destination,
+            pass_type
+        )
+
+        if route_price is None:
+
+            user = User.query.get(
+                session["user_id"]
+            )
+
+            return render_template(
+                "apply.html",
+                user=user,
+                error=(
+                    "This route is currently not available. "
+                    "Please select a supported route."
+                )
+            )
 
         new_pass = BusPass(
             user_id=session["user_id"],
@@ -366,6 +539,7 @@ def apply():
         )
 
         db.session.add(new_pass)
+
         db.session.commit()
 
         new_status = ApplicationStatus(
@@ -374,11 +548,12 @@ def apply():
         )
 
         db.session.add(new_status)
+
         db.session.commit()
 
         return redirect(
             url_for(
-                "application_success",
+                "payment",
                 application_id=new_pass.id
             )
         )
@@ -394,10 +569,152 @@ def apply():
 
 
 # =========================================================
+# PAYMENT
+# =========================================================
+
+@app.route(
+    "/payment/<int:application_id>",
+    methods=["GET", "POST"]
+)
+def payment(application_id):
+
+    if "user_id" not in session:
+
+        return redirect(
+            url_for("login")
+        )
+
+    application = BusPass.query.filter_by(
+        id=application_id,
+        user_id=session["user_id"]
+    ).first()
+
+    if application is None:
+
+        return redirect(
+            url_for("dashboard")
+        )
+
+    # Check if payment already exists
+    existing_payment = Payment.query.filter_by(
+        application_id=application.id
+    ).first()
+
+    if existing_payment:
+
+        return redirect(
+            url_for(
+                "application_success",
+                application_id=application.id
+            )
+        )
+
+    # Calculate route-based price
+    amount = get_route_price(
+        application.source,
+        application.destination,
+        application.pass_type
+    )
+
+    if amount is None:
+
+        return render_template(
+            "payment.html",
+            application=application,
+            error=(
+                "Price not available for this route. "
+                "Please contact the administrator."
+            )
+        )
+
+    if request.method == "POST":
+
+        payment_method = request.form.get(
+            "payment_method"
+        )
+
+        if not payment_method:
+
+            return render_template(
+                "payment.html",
+                application=application,
+                amount=amount,
+                error="Please select a payment method."
+            )
+
+        transaction_id = (
+            "TXN-"
+            + datetime.now().strftime(
+                "%Y%m%d%H%M%S"
+            )
+            + "-"
+            + str(random.randint(1000, 9999))
+        )
+
+        new_payment = Payment(
+            application_id=application.id,
+            user_id=session["user_id"],
+            amount=amount,
+            payment_method=payment_method,
+            transaction_id=transaction_id,
+            payment_status="Success",
+            payment_date=datetime.now().strftime(
+                "%d-%m-%Y %I:%M %p"
+            )
+        )
+
+        db.session.add(new_payment)
+
+        db.session.commit()
+
+        # Send payment/application confirmation email.
+        email_subject = "Bus Pass Application & Payment Successful"
+        email_body = f"""Hello {session.get('user_name', application.name)},
+
+Your bus pass application and payment have been successfully submitted.
+
+Application ID: {application.id}
+Route: {application.source} → {application.destination}
+Pass Type: {application.pass_type}
+Amount Paid: ₹{amount}
+Payment Method: {payment_method}
+Transaction ID: {transaction_id}
+Payment Status: Success
+Application Status: Submitted
+
+Your application will be reviewed by the administrator.
+
+Thank you,
+Cloud Bus Pass System
+"""
+
+        send_email(
+            application_user_email=session.get("user_email"),
+            subject=email_subject,
+            body=email_body
+        )
+
+        return redirect(
+            url_for(
+                "application_success",
+                application_id=application.id
+            )
+        )
+
+    return render_template(
+        "payment.html",
+        application=application,
+        amount=amount
+    )
+
+
+# =========================================================
 # APPLICATION SUCCESS
 # =========================================================
 
-@app.route("/application-success/<int:application_id>")
+@app.route(
+    "/application-success/<int:application_id>"
+)
 def application_success(application_id):
 
     if "user_id" not in session:
@@ -417,9 +734,14 @@ def application_success(application_id):
             url_for("dashboard")
         )
 
+    payment_record = Payment.query.filter_by(
+        application_id=application.id
+    ).first()
+
     return render_template(
         "success.html",
-        application=application
+        application=application,
+        payment=payment_record
     )
 
 
@@ -427,7 +749,10 @@ def application_success(application_id):
 # TICKET BOOKING
 # =========================================================
 
-@app.route("/book-ticket", methods=["GET", "POST"])
+@app.route(
+    "/book-ticket",
+    methods=["GET", "POST"]
+)
 def book_ticket():
 
     if "user_id" not in session:
@@ -507,7 +832,9 @@ def book_ticket():
 # BOOKING CONFIRMATION
 # =========================================================
 
-@app.route("/booking-confirmation/<booking_id>")
+@app.route(
+    "/booking-confirmation/<booking_id>"
+)
 def booking_confirmation(booking_id):
 
     if "user_id" not in session:
@@ -537,6 +864,7 @@ def booking_confirmation(booking_id):
         user=user
     )
 
+
 # =========================================================
 # CANCEL TICKET
 # =========================================================
@@ -563,7 +891,6 @@ def cancel_ticket(booking_id):
             url_for("dashboard")
         )
 
-    # Change booking status to Cancelled
     booking.booking_status = "Cancelled"
 
     db.session.commit()
@@ -571,11 +898,16 @@ def cancel_ticket(booking_id):
     return redirect(
         url_for("dashboard")
     )
+
+
 # =========================================================
 # ADMIN LOGIN
 # =========================================================
 
-@app.route("/admin-login", methods=["GET", "POST"])
+@app.route(
+    "/admin-login",
+    methods=["GET", "POST"]
+)
 def admin_login():
 
     if request.method == "POST":
@@ -640,7 +972,9 @@ def admin_dashboard():
 # APPROVE APPLICATION
 # =========================================================
 
-@app.route("/admin/approve/<int:application_id>")
+@app.route(
+    "/admin/approve/<int:application_id>"
+)
 def approve_application(application_id):
 
     if "admin_id" not in session:
@@ -672,6 +1006,33 @@ def approve_application(application_id):
 
     db.session.commit()
 
+    # Send approval email to the applicant.
+    user = User.query.get(application.user_id)
+
+    if user:
+        email_subject = "Bus Pass Application Approved"
+        email_body = f"""Hello {user.name},
+
+Good news! Your bus pass application has been approved.
+
+Application ID: {application.id}
+Route: {application.source} → {application.destination}
+Pass Type: {application.pass_type}
+Start Date: {application.start_date}
+Status: Approved
+
+Please log in to the Cloud Bus Pass System to view your application details.
+
+Thank you,
+Cloud Bus Pass System
+"""
+
+        send_email(
+            application_user_email=user.email,
+            subject=email_subject,
+            body=email_body
+        )
+
     return redirect(
         url_for("admin_dashboard")
     )
@@ -681,7 +1042,9 @@ def approve_application(application_id):
 # REJECT APPLICATION
 # =========================================================
 
-@app.route("/admin/reject/<int:application_id>")
+@app.route(
+    "/admin/reject/<int:application_id>"
+)
 def reject_application(application_id):
 
     if "admin_id" not in session:
@@ -712,6 +1075,32 @@ def reject_application(application_id):
         db.session.add(status)
 
     db.session.commit()
+
+    # Send rejection email to the applicant.
+    user = User.query.get(application.user_id)
+
+    if user:
+        email_subject = "Bus Pass Application Rejected"
+        email_body = f"""Hello {user.name},
+
+Your bus pass application has been rejected by the administrator.
+
+Application ID: {application.id}
+Route: {application.source} → {application.destination}
+Pass Type: {application.pass_type}
+Status: Rejected
+
+Please log in to the Cloud Bus Pass System for more information.
+
+Thank you,
+Cloud Bus Pass System
+"""
+
+        send_email(
+            application_user_email=user.email,
+            subject=email_subject,
+            body=email_body
+        )
 
     return redirect(
         url_for("admin_dashboard")

@@ -1,6 +1,13 @@
+```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Application Submitted</title>
 
@@ -17,15 +24,22 @@
             ✓
         </div>
 
-        <h1>Application Submitted!</h1>
+        <h1>
+            Application Submitted!
+        </h1>
 
         <p class="success-message">
             Your bus pass application has been submitted successfully.
         </p>
 
+
+        <!-- APPLICATION DETAILS -->
+
         <div class="pass-card">
 
-            <h2>Bus Pass Application</h2>
+            <h2>
+                🚌 Bus Pass Application
+            </h2>
 
             <p>
                 <strong>Application ID:</strong>
@@ -66,16 +80,73 @@
 
             <p>
                 <strong>Status:</strong>
-                <span class="status">Submitted</span>
+
+                <span class="status">
+                    Submitted
+                </span>
+
             </p>
 
         </div>
 
-        <a class="dashboard-button" href="/dashboard">
+
+        <!-- PAYMENT RECEIPT -->
+
+        {% if payment %}
+
+        <div class="pass-card"
+             style="margin-top: 20px;">
+
+            <h2>
+                💳 Payment Receipt
+            </h2>
+
+            <p>
+                <strong>Amount Paid:</strong>
+                ₹{{ "%.2f"|format(payment.amount) }}
+            </p>
+
+            <p>
+                <strong>Payment Method:</strong>
+                {{ payment.payment_method }}
+            </p>
+
+            <p>
+                <strong>Transaction ID:</strong>
+                {{ payment.transaction_id }}
+            </p>
+
+            <p>
+                <strong>Payment Date:</strong>
+                {{ payment.payment_date }}
+            </p>
+
+            <p>
+                <strong>Payment Status:</strong>
+
+                <span class="status">
+                    {{ payment.payment_status }}
+                </span>
+
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- DASHBOARD -->
+
+        <a class="dashboard-button"
+           href="/dashboard">
+
             Go to Dashboard
+
         </a>
 
     </div>
 
 </body>
+
 </html>
+```
