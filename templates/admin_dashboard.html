@@ -13,9 +13,303 @@
     <link rel="stylesheet"
           href="{{ url_for('static', filename='style.css') }}">
 
+    <!-- =====================================================
+         FEATURE 8 - ADMIN STATISTICS STYLES
+    ====================================================== -->
+
+    <style>
+
+        /* ==============================================
+           FEATURE 8 - STATISTICS CARDS
+        =============================================== */
+
+        .feature8-stats-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(180px, 1fr));
+
+            gap: 18px;
+            margin: 25px 0;
+        }
+
+
+        .feature8-stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+
+            display: flex;
+            align-items: center;
+            gap: 15px;
+
+            box-shadow:
+                0 5px 18px rgba(0, 0, 0, 0.08);
+
+            border: 1px solid #eeeeee;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .feature8-stat-card:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+
+        .feature8-stat-icon {
+            width: 55px;
+            height: 55px;
+
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 25px;
+
+            background: #f2f5ff;
+        }
+
+
+        .feature8-stat-content h3 {
+            margin: 0;
+
+            font-size: 25px;
+            font-weight: 700;
+        }
+
+
+        .feature8-stat-content p {
+            margin: 4px 0 0;
+
+            font-size: 13px;
+            color: #666;
+        }
+
+
+        /* ==============================================
+           FEATURE 8 - STATISTICS SECTION
+        =============================================== */
+
+        .feature8-dashboard-section {
+            margin: 30px 0;
+        }
+
+
+        .feature8-dashboard-header {
+            margin-bottom: 18px;
+        }
+
+
+        .feature8-dashboard-header h2 {
+            margin-bottom: 5px;
+        }
+
+
+        .feature8-dashboard-header p {
+            color: #666;
+            margin: 0;
+        }
+
+
+        /* ==============================================
+           FEATURE 8 - CHART GRID
+        =============================================== */
+
+        .feature8-chart-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(300px, 1fr));
+
+            gap: 20px;
+        }
+
+
+        .feature8-chart-card {
+            background: white;
+
+            border-radius: 15px;
+
+            padding: 22px;
+
+            box-shadow:
+                0 5px 18px rgba(0, 0, 0, 0.08);
+
+            border: 1px solid #eeeeee;
+        }
+
+
+        .feature8-chart-card h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+
+            font-size: 17px;
+        }
+
+
+        /* ==============================================
+           FEATURE 8 - BAR CHART
+        =============================================== */
+
+        .feature8-bar-row {
+            margin-bottom: 18px;
+        }
+
+
+        .feature8-bar-label {
+            display: flex;
+
+            justify-content: space-between;
+
+            font-size: 14px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .feature8-bar-background {
+            width: 100%;
+
+            height: 12px;
+
+            background: #eeeeee;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+
+        .feature8-bar {
+            height: 100%;
+
+            width: 0%;
+
+            border-radius: 20px;
+
+            transition:
+                width 0.8s ease;
+        }
+
+
+        .feature8-bar-primary {
+            background: #4f46e5;
+        }
+
+
+        .feature8-bar-success {
+            background: #16a34a;
+        }
+
+
+        .feature8-bar-warning {
+            background: #f59e0b;
+        }
+
+
+        .feature8-bar-danger {
+            background: #dc2626;
+        }
+
+
+        .feature8-bar-info {
+            background: #0891b2;
+        }
+
+
+        /* ==============================================
+           FEATURE 8 - REVENUE CARD
+        =============================================== */
+
+        .feature8-revenue-box {
+            background:
+                linear-gradient(
+                    135deg,
+                    #f7f7ff,
+                    #ffffff
+                );
+
+            border-radius: 15px;
+
+            padding: 25px;
+
+            margin-top: 20px;
+
+            border: 1px solid #eeeeee;
+        }
+
+
+        .feature8-revenue-title {
+            font-size: 14px;
+            color: #666;
+
+            margin-bottom: 8px;
+        }
+
+
+        .feature8-revenue-value {
+            font-size: 32px;
+
+            font-weight: 700;
+        }
+
+
+        /* ==============================================
+           FEATURE 8 - RESPONSIVE
+        =============================================== */
+
+        @media (max-width: 600px) {
+
+            .feature8-stats-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+                gap: 12px;
+            }
+
+
+            .feature8-stat-card {
+                padding: 15px;
+
+                flex-direction: column;
+
+                text-align: center;
+            }
+
+
+            .feature8-stat-icon {
+                width: 45px;
+                height: 45px;
+
+                font-size: 20px;
+            }
+
+
+            .feature8-stat-content h3 {
+                font-size: 21px;
+            }
+
+
+            .feature8-chart-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
 </head>
 
+
 <body>
+
 
     <!-- =========================
          HEADER
@@ -56,7 +350,9 @@
 
         <div class="admin-title">
 
-            <h1>Admin Dashboard</h1>
+            <h1>
+                Admin Dashboard
+            </h1>
 
             <p>
                 Manage bus pass applications and ticket bookings.
@@ -65,8 +361,547 @@
         </div>
 
 
+        <!-- =====================================================
+             FEATURE 8
+             ADMIN STATISTICS
+        ====================================================== -->
+
+        <section class="feature8-dashboard-section">
+
+            <div class="feature8-dashboard-header">
+
+                <h2>
+                    📊 System Statistics
+                </h2>
+
+                <p>
+                    Overview of bus pass applications, bookings,
+                    payments and system activity.
+                </p>
+
+            </div>
+
+
+            <!-- =========================
+                 CALCULATE STATISTICS
+            ========================== -->
+
+            {% set approved_count = namespace(value=0) %}
+            {% set rejected_count = namespace(value=0) %}
+            {% set submitted_count = namespace(value=0) %}
+            {% set monthly_count = namespace(value=0) %}
+            {% set quarterly_count = namespace(value=0) %}
+            {% set yearly_count = namespace(value=0) %}
+            {% set total_revenue = namespace(value=0) %}
+
+            {% for application in applications %}
+
+                {% if application.status_record %}
+
+                    {% if application.status_record.status == "Approved" %}
+
+                        {% set approved_count.value =
+                           approved_count.value + 1 %}
+
+                    {% elif application.status_record.status == "Rejected" %}
+
+                        {% set rejected_count.value =
+                           rejected_count.value + 1 %}
+
+                    {% else %}
+
+                        {% set submitted_count.value =
+                           submitted_count.value + 1 %}
+
+                    {% endif %}
+
+                {% else %}
+
+                    {% set submitted_count.value =
+                       submitted_count.value + 1 %}
+
+                {% endif %}
+
+
+                {% if application.pass_type == "Monthly" %}
+
+                    {% set monthly_count.value =
+                       monthly_count.value + 1 %}
+
+                {% elif application.pass_type == "Quarterly" %}
+
+                    {% set quarterly_count.value =
+                       quarterly_count.value + 1 %}
+
+                {% elif application.pass_type == "Yearly" %}
+
+                    {% set yearly_count.value =
+                       yearly_count.value + 1 %}
+
+                {% endif %}
+
+
+                {% if application.payment %}
+
+                    {% set total_revenue.value =
+                       total_revenue.value +
+                       application.payment.amount %}
+
+                {% endif %}
+
+            {% endfor %}
+
+
+            {% set confirmed_bookings = namespace(value=0) %}
+            {% set cancelled_bookings = namespace(value=0) %}
+
+            {% for booking in bookings %}
+
+                {% if booking.booking_status == "Confirmed" %}
+
+                    {% set confirmed_bookings.value =
+                       confirmed_bookings.value + 1 %}
+
+                {% elif booking.booking_status == "Cancelled" %}
+
+                    {% set cancelled_bookings.value =
+                       cancelled_bookings.value + 1 %}
+
+                {% endif %}
+
+            {% endfor %}
+
+
+            <!-- =========================
+                 STATISTICS CARDS
+            ========================== -->
+
+            <div class="feature8-stats-grid">
+
+
+                <!-- TOTAL APPLICATIONS -->
+
+                <div class="feature8-stat-card">
+
+                    <div class="feature8-stat-icon">
+                        📋
+                    </div>
+
+                    <div class="feature8-stat-content">
+
+                        <h3>
+                            {{ applications|length }}
+                        </h3>
+
+                        <p>
+                            Total Applications
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- APPROVED -->
+
+                <div class="feature8-stat-card">
+
+                    <div class="feature8-stat-icon">
+                        ✅
+                    </div>
+
+                    <div class="feature8-stat-content">
+
+                        <h3>
+                            {{ approved_count.value }}
+                        </h3>
+
+                        <p>
+                            Approved
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SUBMITTED -->
+
+                <div class="feature8-stat-card">
+
+                    <div class="feature8-stat-icon">
+                        ⏳
+                    </div>
+
+                    <div class="feature8-stat-content">
+
+                        <h3>
+                            {{ submitted_count.value }}
+                        </h3>
+
+                        <p>
+                            Submitted
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- REJECTED -->
+
+                <div class="feature8-stat-card">
+
+                    <div class="feature8-stat-icon">
+                        ❌
+                    </div>
+
+                    <div class="feature8-stat-content">
+
+                        <h3>
+                            {{ rejected_count.value }}
+                        </h3>
+
+                        <p>
+                            Rejected
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BOOKINGS -->
+
+                <div class="feature8-stat-card">
+
+                    <div class="feature8-stat-icon">
+                        🎫
+                    </div>
+
+                    <div class="feature8-stat-content">
+
+                        <h3>
+                            {{ bookings|length }}
+                        </h3>
+
+                        <p>
+                            Ticket Bookings
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- REVENUE -->
+
+                <div class="feature8-stat-card">
+
+                    <div class="feature8-stat-icon">
+                        💰
+                    </div>
+
+                    <div class="feature8-stat-content">
+
+                        <h3>
+                            ₹{{ "%.2f"|format(total_revenue.value) }}
+                        </h3>
+
+                        <p>
+                            Total Revenue
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 FEATURE 8 - CHARTS
+            ================================================== -->
+
+            <div class="feature8-chart-grid">
+
+
+                <!-- ==========================================
+                     APPLICATION STATUS CHART
+                =========================================== -->
+
+                <div class="feature8-chart-card">
+
+                    <h3>
+                        📊 Application Status
+                    </h3>
+
+
+                    <div class="feature8-bar-row">
+
+                        <div class="feature8-bar-label">
+
+                            <span>
+                                ✅ Approved
+                            </span>
+
+                            <strong>
+                                {{ approved_count.value }}
+                            </strong>
+
+                        </div>
+
+                        <div class="feature8-bar-background">
+
+                            <div
+                                class="feature8-bar feature8-bar-success"
+                                data-value="{{ approved_count.value }}"
+                                data-total="{{ applications|length }}">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="feature8-bar-row">
+
+                        <div class="feature8-bar-label">
+
+                            <span>
+                                ⏳ Submitted
+                            </span>
+
+                            <strong>
+                                {{ submitted_count.value }}
+                            </strong>
+
+                        </div>
+
+                        <div class="feature8-bar-background">
+
+                            <div
+                                class="feature8-bar feature8-bar-warning"
+                                data-value="{{ submitted_count.value }}"
+                                data-total="{{ applications|length }}">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="feature8-bar-row">
+
+                        <div class="feature8-bar-label">
+
+                            <span>
+                                ❌ Rejected
+                            </span>
+
+                            <strong>
+                                {{ rejected_count.value }}
+                            </strong>
+
+                        </div>
+
+                        <div class="feature8-bar-background">
+
+                            <div
+                                class="feature8-bar feature8-bar-danger"
+                                data-value="{{ rejected_count.value }}"
+                                data-total="{{ applications|length }}">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ==========================================
+                     PASS TYPE CHART
+                =========================================== -->
+
+                <div class="feature8-chart-card">
+
+                    <h3>
+                        🎟️ Pass Type Distribution
+                    </h3>
+
+
+                    <div class="feature8-bar-row">
+
+                        <div class="feature8-bar-label">
+
+                            <span>
+                                Monthly
+                            </span>
+
+                            <strong>
+                                {{ monthly_count.value }}
+                            </strong>
+
+                        </div>
+
+                        <div class="feature8-bar-background">
+
+                            <div
+                                class="feature8-bar feature8-bar-primary"
+                                data-value="{{ monthly_count.value }}"
+                                data-total="{{ applications|length }}">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="feature8-bar-row">
+
+                        <div class="feature8-bar-label">
+
+                            <span>
+                                Quarterly
+                            </span>
+
+                            <strong>
+                                {{ quarterly_count.value }}
+                            </strong>
+
+                        </div>
+
+                        <div class="feature8-bar-background">
+
+                            <div
+                                class="feature8-bar feature8-bar-info"
+                                data-value="{{ quarterly_count.value }}"
+                                data-total="{{ applications|length }}">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="feature8-bar-row">
+
+                        <div class="feature8-bar-label">
+
+                            <span>
+                                Yearly
+                            </span>
+
+                            <strong>
+                                {{ yearly_count.value }}
+                            </strong>
+
+                        </div>
+
+                        <div class="feature8-bar-background">
+
+                            <div
+                                class="feature8-bar feature8-bar-success"
+                                data-value="{{ yearly_count.value }}"
+                                data-total="{{ applications|length }}">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ==========================================
+                     BOOKING STATUS CHART
+                =========================================== -->
+
+                <div class="feature8-chart-card">
+
+                    <h3>
+                        🎫 Ticket Booking Status
+                    </h3>
+
+
+                    <div class="feature8-bar-row">
+
+                        <div class="feature8-bar-label">
+
+                            <span>
+                                ✅ Confirmed
+                            </span>
+
+                            <strong>
+                                {{ confirmed_bookings.value }}
+                            </strong>
+
+                        </div>
+
+                        <div class="feature8-bar-background">
+
+                            <div
+                                class="feature8-bar feature8-bar-success"
+                                data-value="{{ confirmed_bookings.value }}"
+                                data-total="{{ bookings|length }}">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="feature8-bar-row">
+
+                        <div class="feature8-bar-label">
+
+                            <span>
+                                ❌ Cancelled
+                            </span>
+
+                            <strong>
+                                {{ cancelled_bookings.value }}
+                            </strong>
+
+                        </div>
+
+                        <div class="feature8-bar-background">
+
+                            <div
+                                class="feature8-bar feature8-bar-danger"
+                                data-value="{{ cancelled_bookings.value }}"
+                                data-total="{{ bookings|length }}">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="feature8-revenue-box">
+
+                        <div class="feature8-revenue-title">
+                            💰 Total Payment Revenue
+                        </div>
+
+                        <div class="feature8-revenue-value">
+
+                            ₹{{ "%.2f"|format(total_revenue.value) }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
         <!-- =========================
-             STATISTICS
+             EXISTING STATISTICS
         ========================== -->
 
         <div class="admin-stats">
@@ -140,6 +975,88 @@
 
             {% if applications %}
 
+
+            <!-- =========================
+                 FEATURE 4:
+                 SEARCH & FILTER
+            ========================== -->
+
+            <div class="feature4-filter-panel">
+
+                <div class="feature4-filter-title">
+                    🔍 Search & Filter Applications
+                </div>
+
+                <div class="feature4-filter-grid">
+
+                    <div class="feature4-field">
+
+                        <label for="applicationSearch">
+                            Search
+                        </label>
+
+                        <input
+                            type="text"
+                            id="applicationSearch"
+                            placeholder="Search ID, name, route, pass type..."
+                            autocomplete="off">
+
+                    </div>
+
+
+                    <div class="feature4-field">
+
+                        <label for="applicationStatusFilter">
+                            Status
+                        </label>
+
+                        <select id="applicationStatusFilter">
+
+                            <option value="all">
+                                All Statuses
+                            </option>
+
+                            <option value="Submitted">
+                                Submitted
+                            </option>
+
+                            <option value="Approved">
+                                Approved
+                            </option>
+
+                            <option value="Rejected">
+                                Rejected
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="feature4-reset-btn"
+                        onclick="resetApplicationFilters()">
+
+                        ↺ Reset
+
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="applicationFilterCount"
+                    class="feature4-filter-count">
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 APPLICATION TABLE
+            ========================== -->
+
             <div class="table-container">
 
                 <table>
@@ -177,7 +1094,12 @@
 
                         {% for application in applications %}
 
-                        <tr>
+                        <tr
+                            class="feature4-application-row"
+
+                            data-search="{{ application.id }} {{ application.name }} {{ application.age }} {{ application.gender }} {{ application.source }} {{ application.destination }} {{ application.pass_type }} {{ application.start_date }}"
+
+                            data-status="{% if application.status_record %}{{ application.status_record.status }}{% else %}Submitted{% endif %}">
 
                             <td>
                                 #{{ application.id }}
@@ -210,6 +1132,7 @@
                             <td>
                                 {{ application.start_date }}
                             </td>
+
 
                             <td>
 
@@ -250,16 +1173,18 @@
 
                                 <div class="action-buttons">
 
-                                    <a href="/admin/approve/{{ application.id }}"
-                                       class="approve-btn">
+                                    <a
+                                        href="/admin/approve/{{ application.id }}"
+                                        class="approve-btn">
 
                                         ✓ Approve
 
                                     </a>
 
 
-                                    <a href="/admin/reject/{{ application.id }}"
-                                       class="reject-btn">
+                                    <a
+                                        href="/admin/reject/{{ application.id }}"
+                                        class="reject-btn">
 
                                         ✕ Reject
 
@@ -278,6 +1203,7 @@
                 </table>
 
             </div>
+
 
             {% else %}
 
@@ -302,10 +1228,9 @@
         </section>
 
 
-
-        <!-- =========================
+        <!-- =================================================
              TICKET BOOKINGS
-        ========================== -->
+        ================================================== -->
 
         <section class="admin-section">
 
@@ -323,6 +1248,7 @@
 
                 </div>
 
+
                 <div class="booking-count">
 
                     {{ bookings|length }} Booking(s)
@@ -333,6 +1259,84 @@
 
 
             {% if bookings %}
+
+
+            <!-- =========================
+                 FEATURE 4:
+                 BOOKING SEARCH & FILTER
+            ========================== -->
+
+            <div class="feature4-filter-panel">
+
+                <div class="feature4-filter-title">
+                    🔍 Search & Filter Ticket Bookings
+                </div>
+
+                <div class="feature4-filter-grid">
+
+                    <div class="feature4-field">
+
+                        <label for="bookingSearch">
+                            Search
+                        </label>
+
+                        <input
+                            type="text"
+                            id="bookingSearch"
+                            placeholder="Search booking ID, route, bus, seat type..."
+                            autocomplete="off">
+
+                    </div>
+
+
+                    <div class="feature4-field">
+
+                        <label for="bookingStatusFilter">
+                            Status
+                        </label>
+
+                        <select id="bookingStatusFilter">
+
+                            <option value="all">
+                                All Statuses
+                            </option>
+
+                            <option value="Confirmed">
+                                Confirmed
+                            </option>
+
+                            <option value="Cancelled">
+                                Cancelled
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="feature4-reset-btn"
+                        onclick="resetBookingFilters()">
+
+                        ↺ Reset
+
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="bookingFilterCount"
+                    class="feature4-filter-count">
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 BOOKING TABLE
+            ========================== -->
 
             <div class="table-container">
 
@@ -369,7 +1373,12 @@
 
                         {% for booking in bookings %}
 
-                        <tr>
+                        <tr
+                            class="feature4-booking-row"
+
+                            data-search="{{ booking.booking_id }} {{ booking.source }} {{ booking.destination }} {{ booking.travel_date }} {{ booking.bus }} {{ booking.passengers }} {{ booking.seat_type }} {{ booking.booking_date }}"
+
+                            data-status="{{ booking.booking_status }}">
 
                             <td>
 
@@ -379,47 +1388,41 @@
 
                             </td>
 
-                            <td>
 
+                            <td>
                                 📍 {{ booking.source }}
-
                             </td>
 
-                            <td>
 
+                            <td>
                                 📍 {{ booking.destination }}
-
                             </td>
 
-                            <td>
 
+                            <td>
                                 📅 {{ booking.travel_date }}
-
                             </td>
 
-                            <td>
 
+                            <td>
                                 🚌 {{ booking.bus }}
-
                             </td>
 
-                            <td>
 
+                            <td>
                                 {{ booking.passengers }}
-
                             </td>
 
-                            <td>
 
+                            <td>
                                 {{ booking.seat_type }}
-
                             </td>
+
 
                             <td>
-
                                 {{ booking.booking_date }}
-
                             </td>
+
 
                             <td>
 
@@ -455,6 +1458,7 @@
 
             </div>
 
+
             {% else %}
 
                 <div class="empty-box">
@@ -471,8 +1475,9 @@
                         When users book tickets, their bookings will appear here.
                     </p>
 
-                    <a href="/"
-                       class="home-btn">
+                    <a
+                        href="/"
+                        class="home-btn">
 
                         Go to Home
 
@@ -503,6 +1508,374 @@
         </p>
 
     </footer>
+
+
+    <!-- =====================================================
+         FEATURE 8 JAVASCRIPT
+         ANIMATED STATISTICS BARS
+    ====================================================== -->
+
+    <script>
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const bars =
+                document.querySelectorAll(
+                    ".feature8-bar"
+                );
+
+
+            bars.forEach(
+                function (bar) {
+
+                    const value =
+                        Number(
+                            bar.dataset.value || 0
+                        );
+
+                    const total =
+                        Number(
+                            bar.dataset.total || 0
+                        );
+
+
+                    let percentage = 0;
+
+
+                    if (total > 0) {
+
+                        percentage =
+                            (value / total) * 100;
+
+                    }
+
+
+                    bar.style.width =
+                        percentage + "%";
+
+                }
+            );
+
+        }
+    );
+
+
+    /* =================================================
+       FEATURE 4 - SEARCH & FILTER
+    ================================================= */
+
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+
+            /* =====================================
+               APPLICATION ELEMENTS
+            ===================================== */
+
+            const applicationSearch =
+                document.getElementById(
+                    "applicationSearch"
+                );
+
+            const applicationStatusFilter =
+                document.getElementById(
+                    "applicationStatusFilter"
+                );
+
+            const applicationRows =
+                document.querySelectorAll(
+                    ".feature4-application-row"
+                );
+
+            const applicationCount =
+                document.getElementById(
+                    "applicationFilterCount"
+                );
+
+
+            /* =====================================
+               BOOKING ELEMENTS
+            ===================================== */
+
+            const bookingSearch =
+                document.getElementById(
+                    "bookingSearch"
+                );
+
+            const bookingStatusFilter =
+                document.getElementById(
+                    "bookingStatusFilter"
+                );
+
+            const bookingRows =
+                document.querySelectorAll(
+                    ".feature4-booking-row"
+                );
+
+            const bookingCount =
+                document.getElementById(
+                    "bookingFilterCount"
+                );
+
+
+            /* =====================================
+               COMMON FILTER FUNCTION
+            ===================================== */
+
+            function filterRows(
+                rows,
+                searchInput,
+                statusSelect,
+                countElement,
+                label
+            ) {
+
+                if (
+                    !searchInput ||
+                    !statusSelect ||
+                    !countElement
+                ) {
+
+                    return;
+
+                }
+
+
+                const searchText =
+                    searchInput.value
+                        .trim()
+                        .toLowerCase();
+
+
+                const selectedStatus =
+                    statusSelect.value;
+
+
+                let visibleCount = 0;
+
+
+                rows.forEach(
+                    function (row) {
+
+                        const searchableText =
+                            (
+                                row.dataset.search || ""
+                            ).toLowerCase();
+
+
+                        const rowStatus =
+                            row.dataset.status || "";
+
+
+                        const matchesSearch =
+                            searchText === "" ||
+                            searchableText.includes(
+                                searchText
+                            );
+
+
+                        const matchesStatus =
+                            selectedStatus === "all" ||
+                            rowStatus === selectedStatus;
+
+
+                        if (
+                            matchesSearch &&
+                            matchesStatus
+                        ) {
+
+                            row.classList.remove(
+                                "feature4-filter-row-hidden"
+                            );
+
+                            visibleCount++;
+
+                        } else {
+
+                            row.classList.add(
+                                "feature4-filter-row-hidden"
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                countElement.textContent =
+                    "Showing " +
+                    visibleCount +
+                    " of " +
+                    rows.length +
+                    " " +
+                    label +
+                    "(s)";
+
+            }
+
+
+            /* =====================================
+               APPLICATION FILTER
+            ===================================== */
+
+            function filterApplications() {
+
+                filterRows(
+                    applicationRows,
+                    applicationSearch,
+                    applicationStatusFilter,
+                    applicationCount,
+                    "application"
+                );
+
+            }
+
+
+            /* =====================================
+               BOOKING FILTER
+            ===================================== */
+
+            function filterBookings() {
+
+                filterRows(
+                    bookingRows,
+                    bookingSearch,
+                    bookingStatusFilter,
+                    bookingCount,
+                    "booking"
+                );
+
+            }
+
+
+            /* =====================================
+               RESET APPLICATION FILTER
+            ===================================== */
+
+            window.resetApplicationFilters =
+                function () {
+
+                    if (applicationSearch) {
+
+                        applicationSearch.value =
+                            "";
+
+                    }
+
+
+                    if (applicationStatusFilter) {
+
+                        applicationStatusFilter.value =
+                            "all";
+
+                    }
+
+
+                    filterApplications();
+
+                };
+
+
+            /* =====================================
+               RESET BOOKING FILTER
+            ===================================== */
+
+            window.resetBookingFilters =
+                function () {
+
+                    if (bookingSearch) {
+
+                        bookingSearch.value =
+                            "";
+
+                    }
+
+
+                    if (bookingStatusFilter) {
+
+                        bookingStatusFilter.value =
+                            "all";
+
+                    }
+
+
+                    filterBookings();
+
+                };
+
+
+            /* =====================================
+               APPLICATION SEARCH LISTENER
+            ===================================== */
+
+            if (applicationSearch) {
+
+                applicationSearch.addEventListener(
+                    "input",
+                    filterApplications
+                );
+
+            }
+
+
+            /* =====================================
+               APPLICATION STATUS LISTENER
+            ===================================== */
+
+            if (applicationStatusFilter) {
+
+                applicationStatusFilter.addEventListener(
+                    "change",
+                    filterApplications
+                );
+
+            }
+
+
+            /* =====================================
+               BOOKING SEARCH LISTENER
+            ===================================== */
+
+            if (bookingSearch) {
+
+                bookingSearch.addEventListener(
+                    "input",
+                    filterBookings
+                );
+
+            }
+
+
+            /* =====================================
+               BOOKING STATUS LISTENER
+            ===================================== */
+
+            if (bookingStatusFilter) {
+
+                bookingStatusFilter.addEventListener(
+                    "change",
+                    filterBookings
+                );
+
+            }
+
+
+            /* =====================================
+               INITIAL FILTER
+            ===================================== */
+
+            filterApplications();
+
+            filterBookings();
+
+        }
+    );
+
+    </script>
 
 
 </body>

@@ -1,594 +1,1382 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>User Dashboard - Cloud Bus Pass System</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='style.css') }}">
 
+    <style>
+        /* =====================================================
+           FEATURE 9 - PROFILE BUTTON
+        ===================================================== */
+
+        .profile-btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-weight: 600;
+            transition: 0.3s ease;
+        }
+
+        .profile-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .profile-action-card {
+            position: relative;
+        }
+
+        .profile-action-card .action-icon {
+            font-size: 2rem;
+        }
+
+        @media (max-width: 768px) {
+
+            .header-right {
+                gap: 8px;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+
+            .profile-btn,
+            .logout-btn {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+        }
+
+        @media (max-width: 500px) {
+
+            .header-container {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+
+            .header-right {
+                justify-content: center;
+            }
+
+        }
+    </style>
 </head>
 
 <body>
 
-    <!-- ================= HEADER ================= -->
+<!-- =========================================================
+     HEADER
+========================================================= -->
 
-    <header class="main-header">
+<header class="top-header">
 
-        <div class="header-content">
+    <div class="header-container">
 
-            <div class="logo">
-                🚌
-                <span>Cloud Bus Pass</span>
-            </div>
+        <div class="logo">
+            🚌 Cloud Bus Pass
+        </div>
 
-            <a href="/logout" class="header-logout">
-                🚪 Logout
+        <div class="header-right">
+
+            <span class="welcome-text">
+                Welcome, {{ user.name }}
+            </span>
+
+            <!-- FEATURE 9 -->
+            <a href="{{ url_for('profile') }}"
+               class="profile-btn">
+                👤 My Profile
+            </a>
+
+            <a href="{{ url_for('logout') }}"
+               class="logout-btn">
+                Logout
             </a>
 
         </div>
 
-    </header>
+    </div>
+
+</header>
 
 
-    <!-- ================= DASHBOARD ================= -->
+<!-- =========================================================
+     MAIN DASHBOARD
+========================================================= -->
 
-    <main class="dashboard-container">
+<main class="dashboard-container">
+
+    <!-- =====================================================
+         WELCOME SECTION
+    ====================================================== -->
+
+    <section class="dashboard-welcome">
+
+        <h1>
+            Welcome, {{ user.name }}! 👋
+        </h1>
+
+        <p>
+            Manage your bus pass applications and ticket bookings
+            from your dashboard.
+        </p>
+
+    </section>
 
 
-        <!-- ================= WELCOME ================= -->
+    <!-- =====================================================
+         ACTION CARDS
+    ====================================================== -->
 
-        <section class="welcome-card">
+    <section class="action-cards">
 
-            <div>
+        <a href="{{ url_for('apply') }}"
+           class="action-card">
 
-                <p class="welcome-small">
-                    WELCOME BACK 👋
-                </p>
-
-                <h1>
-                    Hello, {{ user.name }}!
-                </h1>
-
-                <p class="welcome-description">
-                    Manage your bus pass applications and
-                    book your bus tickets easily from your dashboard.
-                </p>
-
-            </div>
-
-            <div class="welcome-bus">
+            <div class="action-icon">
                 🚌
             </div>
 
-        </section>
+            <h3>
+                Apply for Bus Pass
+            </h3>
+
+            <p>
+                Submit a new bus pass application.
+            </p>
+
+        </a>
 
 
+        <a href="{{ url_for('book_ticket') }}"
+           class="action-card">
 
-        <!-- ================= ACTION CARDS ================= -->
-
-        <section class="dashboard-actions">
-
-
-            <!-- APPLY BUS PASS -->
-
-            <a href="/apply"
-               class="dashboard-action-card bus-pass-card">
-
-                <div class="action-icon">
-                    📝
-                </div>
-
-                <div class="action-content">
-
-                    <h2>
-                        Apply for a Bus Pass
-                    </h2>
-
-                    <p>
-                        Submit a new bus pass application online.
-                    </p>
-
-                </div>
-
-                <div class="action-arrow">
-                    →
-                </div>
-
-            </a>
-
-
-
-            <!-- BOOK TICKET -->
-
-            <a href="/book-ticket"
-               class="dashboard-action-card ticket-card-dashboard">
-
-                <div class="action-icon">
-                    🎟️
-                </div>
-
-                <div class="action-content">
-
-                    <h2>
-                        Book a Bus Ticket
-                    </h2>
-
-                    <p>
-                        Book your bus ticket online quickly and easily.
-                    </p>
-
-                </div>
-
-                <div class="action-arrow">
-                    →
-                </div>
-
-            </a>
-
-
-
-            <!-- HOME -->
-
-            <a href="/"
-               class="dashboard-action-card home-card">
-
-                <div class="action-icon">
-                    🏠
-                </div>
-
-                <div class="action-content">
-
-                    <h2>
-                        Back to Home
-                    </h2>
-
-                    <p>
-                        Return to the Cloud Bus Pass home page.
-                    </p>
-
-                </div>
-
-                <div class="action-arrow">
-                    →
-                </div>
-
-            </a>
-
-
-        </section>
-
-
-
-        <!-- ================= BUS PASS APPLICATIONS ================= -->
-
-        <section class="applications-section">
-
-            <div class="section-title">
-
-                <div>
-
-                    <p class="section-small">
-                        YOUR ACTIVITY
-                    </p>
-
-                    <h2>
-                        My Bus Pass Applications
-                    </h2>
-
-                </div>
-
+            <div class="action-icon">
+                🎫
             </div>
 
+            <h3>
+                Book Your Ticket
+            </h3>
 
-            {% if applications %}
+            <p>
+                Book a bus ticket for your journey.
+            </p>
 
-                <div class="applications-list">
-
-                    {% for application in applications %}
-
-                        <div class="application-card">
-
-                            <div class="application-number">
-
-                                <span>
-                                    APPLICATION
-                                </span>
-
-                                <strong>
-                                    #{{ application.id }}
-                                </strong>
-
-                            </div>
+        </a>
 
 
-                            <div class="application-route">
+        <!-- FEATURE 9 -->
+        <a href="{{ url_for('profile') }}"
+           class="action-card profile-action-card">
 
-                                <span>
-                                    ROUTE
-                                </span>
-
-                                <strong>
-                                    {{ application.source }}
-                                    →
-                                    {{ application.destination }}
-                                </strong>
-
-                            </div>
-
-
-                            <div class="application-type">
-
-                                <span>
-                                    PASS TYPE
-                                </span>
-
-                                <strong>
-                                    {{ application.pass_type }}
-                                </strong>
-
-                            </div>
-
-
-                            <div class="application-date">
-
-                                <span>
-                                    START DATE
-                                </span>
-
-                                <strong>
-                                    {{ application.start_date }}
-                                </strong>
-
-                            </div>
-
-
-                            <div class="application-status">
-
-                                <span>
-                                    STATUS
-                                </span>
-
-
-                                {% if application.status_record %}
-
-                                    {% if application.status_record.status == "Approved" %}
-
-                                        <strong class="status-approved">
-                                            🟢 Approved
-                                        </strong>
-
-                                    {% elif application.status_record.status == "Rejected" %}
-
-                                        <strong class="status-rejected">
-                                            🔴 Rejected
-                                        </strong>
-
-                                    {% else %}
-
-                                        <strong class="status-submitted">
-                                            🟡 Submitted
-                                        </strong>
-
-                                    {% endif %}
-
-                                {% else %}
-
-                                    <strong class="status-submitted">
-                                        🟡 Submitted
-                                    </strong>
-
-                                {% endif %}
-
-                            </div>
-
-                        </div>
-
-                    {% endfor %}
-
-                </div>
-
-            {% else %}
-
-                <div class="no-applications">
-
-                    <div>
-                        📋
-                    </div>
-
-                    <h3>
-                        No Bus Pass Applications Yet
-                    </h3>
-
-                    <p>
-                        You haven't submitted a bus pass application.
-                    </p>
-
-                    <a href="/apply">
-                        Apply Now
-                    </a>
-
-                </div>
-
-            {% endif %}
-
-        </section>
-
-
-
-        <!-- ================= TICKET BOOKINGS ================= -->
-
-        <section class="applications-section">
-
-            <div class="section-title">
-
-                <div>
-
-                    <p class="section-small">
-                        YOUR TICKETS
-                    </p>
-
-                    <h2>
-                        My Ticket Bookings
-                    </h2>
-
-                </div>
-
+            <div class="action-icon">
+                👤
             </div>
 
+            <h3>
+                My Profile
+            </h3>
 
-            {% if bookings %}
+            <p>
+                View and update your personal information.
+            </p>
 
-                <div class="applications-list">
+        </a>
 
-                    {% for booking in bookings %}
+    </section>
 
-                        <div class="application-card">
 
+    <!-- =====================================================
+         BUS PASS APPLICATIONS
+    ====================================================== -->
 
-                            <!-- BOOKING ID -->
+    <section class="dashboard-section">
 
-                            <div class="application-number">
-
-                                <span>
-                                    BOOKING ID
-                                </span>
-
-                                <strong>
-                                    {{ booking.booking_id }}
-                                </strong>
-
-                            </div>
-
-
-                            <!-- ROUTE -->
-
-                            <div class="application-route">
-
-                                <span>
-                                    ROUTE
-                                </span>
-
-                                <strong>
-                                    {{ booking.source }}
-                                    →
-                                    {{ booking.destination }}
-                                </strong>
-
-                            </div>
-
-
-                            <!-- TRAVEL DATE -->
-
-                            <div class="application-date">
-
-                                <span>
-                                    TRAVEL DATE
-                                </span>
-
-                                <strong>
-                                    {{ booking.travel_date }}
-                                </strong>
-
-                            </div>
-
-
-                            <!-- BUS -->
-
-                            <div class="application-type">
-
-                                <span>
-                                    BUS
-                                </span>
-
-                                <strong>
-                                    {{ booking.bus }}
-                                </strong>
-
-                            </div>
-
-
-                            <!-- PASSENGERS -->
-
-                            <div class="application-type">
-
-                                <span>
-                                    PASSENGERS
-                                </span>
-
-                                <strong>
-                                    {{ booking.passengers }}
-                                </strong>
-
-                            </div>
-
-
-                            <!-- SEAT -->
-
-                            <div class="application-type">
-
-                                <span>
-                                    SEAT TYPE
-                                </span>
-
-                                <strong>
-                                    {{ booking.seat_type }}
-                                </strong>
-
-                            </div>
-
-
-                            <!-- STATUS -->
-
-                            <div class="application-status">
-
-                                <span>
-                                    STATUS
-                                </span>
-
-
-                                {% if booking.booking_status == "Confirmed" %}
-
-                                    <strong class="status-confirmed">
-                                        🟢 Confirmed
-                                    </strong>
-
-                                {% elif booking.booking_status == "Cancelled" %}
-
-                                    <strong class="status-rejected">
-                                        🔴 Cancelled
-                                    </strong>
-
-                                {% else %}
-
-                                    <strong class="status-submitted">
-                                        🟡 {{ booking.booking_status }}
-                                    </strong>
-
-                                {% endif %}
-
-                            </div>
-
-
-                            <!-- ACTIONS -->
-
-                            <div style="margin-top: 15px;">
-
-
-                                <!-- VIEW TICKET -->
-
-                                <a href="{{ url_for(
-                                    'booking_confirmation',
-                                    booking_id=booking.booking_id
-                                ) }}"
-                                   class="btn">
-
-                                    🎟️ View Ticket
-
-                                </a>
-
-
-                                <!-- CANCEL TICKET -->
-
-                                {% if booking.booking_status == "Confirmed" %}
-
-                                    <a href="{{ url_for(
-                                        'cancel_ticket',
-                                        booking_id=booking.booking_id
-                                    ) }}"
-                                       class="btn btn-danger"
-                                       style="margin-left: 10px;"
-                                       onclick="return confirm(
-                                           'Are you sure you want to cancel this ticket?'
-                                       );">
-
-                                        ❌ Cancel Ticket
-
-                                    </a>
-
-                                {% endif %}
-
-
-                            </div>
-
-
-                        </div>
-
-                    {% endfor %}
-
-                </div>
-
-
-            {% else %}
-
-
-                <div class="no-applications">
-
-                    <div>
-                        🎟️
-                    </div>
-
-                    <h3>
-                        No Ticket Bookings Yet
-                    </h3>
-
-                    <p>
-                        You haven't booked any bus tickets.
-                    </p>
-
-                    <a href="/book-ticket">
-                        Book a Ticket
-                    </a>
-
-                </div>
-
-
-            {% endif %}
-
-        </section>
-
-
-    </main>
-
-
-
-    <!-- ================= FOOTER ================= -->
-
-    <footer class="main-footer">
-
-        <div class="footer-content">
+        <div class="section-heading">
 
             <div>
 
-                <strong>
-                    🚌 Cloud Bus Pass System
-                </strong>
+                <h2>
+                    🚌 My Bus Pass Applications
+                </h2>
 
                 <p>
-                    Smart and simple digital bus pass management.
-                </p>
-
-            </div>
-
-            <div class="footer-right">
-
-                <p>
-                    © 2026 Cloud Bus Pass System
+                    View and track your bus pass applications.
                 </p>
 
             </div>
 
         </div>
 
-    </footer>
+
+        <!-- =================================================
+             FEATURE 4 - APPLICATION SEARCH/FILTER
+        ================================================== -->
+
+        <div class="feature4-filter-panel">
+
+            <div class="feature4-filter-title">
+                🔍 Search & Filter Applications
+            </div>
+
+
+            <div class="feature4-filter-grid">
+
+                <div class="feature4-field">
+
+                    <label for="applicationSearch">
+                        Search
+                    </label>
+
+                    <input
+                        type="text"
+                        id="applicationSearch"
+                        placeholder="Search by ID, route, pass type..."
+                    >
+
+                </div>
+
+
+                <div class="feature4-field">
+
+                    <label for="applicationStatusFilter">
+                        Status
+                    </label>
+
+                    <select id="applicationStatusFilter">
+
+                        <option value="all">
+                            All Statuses
+                        </option>
+
+                        <option value="Submitted">
+                            Submitted
+                        </option>
+
+                        <option value="Approved">
+                            Approved
+                        </option>
+
+                        <option value="Rejected">
+                            Rejected
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="feature4-field">
+
+                    <label>
+                        &nbsp;
+                    </label>
+
+                    <button
+                        type="button"
+                        class="feature4-reset-btn"
+                        onclick="resetApplicationFilters()">
+
+                        Reset
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="feature4-filter-count"
+                 id="applicationFilterCount">
+
+                Showing all applications
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             APPLICATION LIST
+        ================================================== -->
+
+        {% if applications %}
+
+        <div class="applications-list">
+
+            {% for application in applications %}
+
+            {% set application_status =
+                application.status_record.status
+                if application.status_record
+                else "Submitted"
+            %}
+
+
+            <div
+                class="application-card feature4-application-card"
+                data-search="
+                    {{ application.id }}
+                    {{ application.name }}
+                    {{ application.age }}
+                    {{ application.gender }}
+                    {{ application.source }}
+                    {{ application.destination }}
+                    {{ application.pass_type }}
+                    {{ application.start_date }}
+                "
+                data-status="{{ application_status }}"
+            >
+
+
+                <!-- =========================================
+                     APPLICATION HEADER
+                ========================================== -->
+
+                <div class="application-card-header">
+
+                    <div>
+
+                        <h3>
+                            🚌 Bus Pass Application
+                        </h3>
+
+                        <p class="application-id">
+                            Application ID:
+                            <strong>
+                                #{{ application.id }}
+                            </strong>
+                        </p>
+
+                    </div>
+
+
+                    <div class="application-status">
+
+                        {% if application_status == "Approved" %}
+
+                        <span class="status-badge approved">
+                            🟢 Approved
+                        </span>
+
+                        {% elif application_status == "Rejected" %}
+
+                        <span class="status-badge rejected">
+                            🔴 Rejected
+                        </span>
+
+                        {% else %}
+
+                        <span class="status-badge submitted">
+                            🟡 Submitted
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     APPLICATION DETAILS
+                ========================================== -->
+
+                <div class="application-details">
+
+                    <div class="detail-item">
+
+                        <span class="detail-label">
+                            👤 Name
+                        </span>
+
+                        <span class="detail-value">
+                            {{ application.name }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span class="detail-label">
+                            🎂 Age
+                        </span>
+
+                        <span class="detail-value">
+                            {{ application.age }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span class="detail-label">
+                            ⚧ Gender
+                        </span>
+
+                        <span class="detail-value">
+                            {{ application.gender }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span class="detail-label">
+                            📍 Source
+                        </span>
+
+                        <span class="detail-value">
+                            {{ application.source }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span class="detail-label">
+                            📍 Destination
+                        </span>
+
+                        <span class="detail-value">
+                            {{ application.destination }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span class="detail-label">
+                            🎫 Pass Type
+                        </span>
+
+                        <span class="detail-value">
+                            {{ application.pass_type }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span class="detail-label">
+                            📅 Start Date
+                        </span>
+
+                        <span class="detail-value">
+                            {{ application.start_date }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span class="detail-label">
+                            📊 Status
+                        </span>
+
+                        <span class="detail-value">
+
+                            {% if application_status == "Approved" %}
+
+                            Approved
+
+                            {% elif application_status == "Rejected" %}
+
+                            Rejected
+
+                            {% else %}
+
+                            Submitted
+
+                            {% endif %}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     PAYMENT INFORMATION
+                ========================================== -->
+
+                {% if application.payment %}
+
+                <div class="payment-info">
+
+                    <h4>
+                        💳 Payment Details
+                    </h4>
+
+                    <div class="payment-details">
+
+                        <span>
+                            Amount:
+                            <strong>
+                                ₹{{ application.payment.amount }}
+                            </strong>
+                        </span>
+
+                        <span>
+                            Method:
+                            <strong>
+                                {{ application.payment.payment_method }}
+                            </strong>
+                        </span>
+
+                        <span>
+                            Transaction ID:
+                            <strong>
+                                {{ application.payment.transaction_id }}
+                            </strong>
+                        </span>
+
+                        <span>
+                            Status:
+                            <strong>
+                                {{ application.payment.payment_status }}
+                            </strong>
+                        </span>
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+
+                <!-- =========================================
+                     APPLICATION ACTIONS
+                ========================================== -->
+
+                <div class="application-actions">
+
+                    {% if application_status == "Approved" %}
+
+                    <!-- FEATURE 5 -->
+                    <a
+                        href="{{ url_for('download_pass', application_id=application.id) }}"
+                        class="btn btn-primary"
+                    >
+                        📄 Download Bus Pass PDF
+                    </a>
+
+                    {% elif application_status == "Submitted" %}
+
+                    <span class="pending-message">
+                        ⏳ Waiting for administrator approval
+                    </span>
+
+                    {% elif application_status == "Rejected" %}
+
+                    <span class="rejected-message">
+                        ❌ Application rejected
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- =================================================
+             NO FILTER RESULTS
+        ================================================== -->
+
+        <div
+            id="noApplicationResults"
+            class="empty-state feature4-no-results"
+            style="display: none;"
+        >
+
+            <div class="empty-icon">
+                🔍
+            </div>
+
+            <h3>
+                No Applications Found
+            </h3>
+
+            <p>
+                Try changing your search or filter.
+            </p>
+
+        </div>
+
+
+        {% else %}
+
+        <!-- =================================================
+             NO APPLICATIONS
+        ================================================== -->
+
+        <div class="empty-state">
+
+            <div class="empty-icon">
+                🚌
+            </div>
+
+            <h3>
+                No Bus Pass Applications
+            </h3>
+
+            <p>
+                You haven't submitted any bus pass applications yet.
+            </p>
+
+            <a
+                href="{{ url_for('apply') }}"
+                class="btn btn-primary"
+            >
+                Apply for Bus Pass
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- =====================================================
+         TICKET BOOKINGS
+    ====================================================== -->
+
+    <section class="dashboard-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>
+                    🎫 My Ticket Bookings
+                </h2>
+
+                <p>
+                    View and manage your bus ticket bookings.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             FEATURE 4 - BOOKING SEARCH/FILTER
+        ================================================== -->
+
+        <div class="feature4-filter-panel">
+
+            <div class="feature4-filter-title">
+                🔍 Search & Filter Bookings
+            </div>
+
+
+            <div class="feature4-filter-grid">
+
+                <div class="feature4-field">
+
+                    <label for="bookingSearch">
+                        Search
+                    </label>
+
+                    <input
+                        type="text"
+                        id="bookingSearch"
+                        placeholder="Search by booking ID, route, bus..."
+                    >
+
+                </div>
+
+
+                <div class="feature4-field">
+
+                    <label for="bookingStatusFilter">
+                        Status
+                    </label>
+
+                    <select id="bookingStatusFilter">
+
+                        <option value="all">
+                            All Statuses
+                        </option>
+
+                        <option value="Confirmed">
+                            Confirmed
+                        </option>
+
+                        <option value="Cancelled">
+                            Cancelled
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="feature4-field">
+
+                    <label>
+                        &nbsp;
+                    </label>
+
+                    <button
+                        type="button"
+                        class="feature4-reset-btn"
+                        onclick="resetBookingFilters()">
+
+                        Reset
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="feature4-filter-count"
+                id="bookingFilterCount"
+            >
+
+                Showing all bookings
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             BOOKINGS
+        ================================================== -->
+
+        {% if bookings %}
+
+        <div class="bookings-list">
+
+            {% for booking in bookings %}
+
+            <div
+                class="booking-card feature4-booking-card"
+                data-search="
+                    {{ booking.booking_id }}
+                    {{ booking.source }}
+                    {{ booking.destination }}
+                    {{ booking.travel_date }}
+                    {{ booking.bus }}
+                    {{ booking.passengers }}
+                    {{ booking.seat_type }}
+                    {{ booking.booking_date }}
+                "
+                data-status="{{ booking.booking_status }}"
+            >
+
+
+                <!-- =========================================
+                     BOOKING HEADER
+                ========================================== -->
+
+                <div class="booking-card-header">
+
+                    <div>
+
+                        <h3>
+                            🎫 Bus Ticket
+                        </h3>
+
+                        <p class="booking-id">
+                            Booking ID:
+                            <strong>
+                                {{ booking.booking_id }}
+                            </strong>
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        {% if booking.booking_status == "Confirmed" %}
+
+                        <span class="status-badge approved">
+                            🟢 Confirmed
+                        </span>
+
+                        {% else %}
+
+                        <span class="status-badge rejected">
+                            🔴 Cancelled
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     BOOKING DETAILS
+                ========================================== -->
+
+                <div class="booking-details">
+
+                    <div class="detail-item">
+
+                        <span class="detail-label">
+                            📍 Source
+                        </span>
+
+                        <span class="detail-value">
+                            {{ booking.source }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span class="detail-label">
+                            📍 Destination
+                        </span>
+
+                        <span class="detail-value">
+                            {{ booking.destination }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span class="detail-label">
+                            📅 Travel Date
+                        </span>
+
+                        <span class="detail-value">
+                            {{ booking.travel_date }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span class="detail-label">
+                            🚌 Bus
+                        </span>
+
+                        <span class="detail-value">
+                            {{ booking.bus }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span class="detail-label">
+                            👥 Passengers
+                        </span>
+
+                        <span class="detail-value">
+                            {{ booking.passengers }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span class="detail-label">
+                            💺 Seat Type
+                        </span>
+
+                        <span class="detail-value">
+                            {{ booking.seat_type }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span class="detail-label">
+                            🕐 Booking Date
+                        </span>
+
+                        <span class="detail-value">
+                            {{ booking.booking_date }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span class="detail-label">
+                            📊 Status
+                        </span>
+
+                        <span class="detail-value">
+                            {{ booking.booking_status }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     BOOKING ACTIONS
+                ========================================== -->
+
+                <div class="booking-actions">
+
+                    {% if booking.booking_status == "Confirmed" %}
+
+                    <a
+                        href="{{ url_for('booking_confirmation', booking_id=booking.booking_id) }}"
+                        class="btn btn-primary"
+                    >
+                        🎫 View Ticket
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('cancel_ticket', booking_id=booking.booking_id) }}"
+                        class="btn btn-danger"
+                        onclick="return confirm('Are you sure you want to cancel this ticket?');"
+                    >
+                        ❌ Cancel Ticket
+                    </a>
+
+                    {% else %}
+
+                    <span class="cancelled-message">
+                        ❌ This ticket has been cancelled
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- =================================================
+             NO BOOKING FILTER RESULTS
+        ================================================== -->
+
+        <div
+            id="noBookingResults"
+            class="empty-state feature4-no-results"
+            style="display: none;"
+        >
+
+            <div class="empty-icon">
+                🔍
+            </div>
+
+            <h3>
+                No Bookings Found
+            </h3>
+
+            <p>
+                Try changing your search or filter.
+            </p>
+
+        </div>
+
+
+        {% else %}
+
+        <!-- =================================================
+             NO BOOKINGS
+        ================================================== -->
+
+        <div class="empty-state">
+
+            <div class="empty-icon">
+                🎫
+            </div>
+
+            <h3>
+                No Ticket Bookings
+            </h3>
+
+            <p>
+                You haven't booked any bus tickets yet.
+            </p>
+
+            <a
+                href="{{ url_for('book_ticket') }}"
+                class="btn btn-primary"
+            >
+                Book Your Ticket
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="footer">
+
+    <p>
+        © 2026 Cloud Bus Pass System.
+        All Rights Reserved.
+    </p>
+
+</footer>
+
+
+<!-- =========================================================
+     FEATURE 4 JAVASCRIPT
+========================================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const applicationSearch =
+        document.getElementById("applicationSearch");
+
+    const applicationStatusFilter =
+        document.getElementById("applicationStatusFilter");
+
+    const applicationFilterCount =
+        document.getElementById("applicationFilterCount");
+
+    const noApplicationResults =
+        document.getElementById("noApplicationResults");
+
+
+    const bookingSearch =
+        document.getElementById("bookingSearch");
+
+    const bookingStatusFilter =
+        document.getElementById("bookingStatusFilter");
+
+    const bookingFilterCount =
+        document.getElementById("bookingFilterCount");
+
+    const noBookingResults =
+        document.getElementById("noBookingResults");
+
+
+    /* =====================================================
+       APPLICATION FILTER
+    ====================================================== */
+
+    function filterApplications() {
+
+        if (!applicationSearch) {
+            return;
+        }
+
+        const searchText =
+            applicationSearch.value
+                .toLowerCase()
+                .trim();
+
+        const selectedStatus =
+            applicationStatusFilter.value;
+
+        const cards =
+            document.querySelectorAll(
+                ".feature4-application-card"
+            );
+
+        let visibleCount = 0;
+
+
+        cards.forEach(function (card) {
+
+            const cardSearch =
+                (card.dataset.search || "")
+                    .toLowerCase();
+
+            const cardStatus =
+                card.dataset.status || "";
+
+
+            const searchMatch =
+                searchText === "" ||
+                cardSearch.includes(searchText);
+
+            const statusMatch =
+                selectedStatus === "all" ||
+                cardStatus === selectedStatus;
+
+
+            if (searchMatch && statusMatch) {
+
+                card.classList.remove(
+                    "feature4-card-hidden"
+                );
+
+                visibleCount++;
+
+            } else {
+
+                card.classList.add(
+                    "feature4-card-hidden"
+                );
+
+            }
+
+        });
+
+
+        if (applicationFilterCount) {
+
+            applicationFilterCount.textContent =
+                "Showing " +
+                visibleCount +
+                " application" +
+                (visibleCount === 1 ? "" : "s");
+
+        }
+
+
+        if (noApplicationResults) {
+
+            noApplicationResults.style.display =
+                cards.length > 0 && visibleCount === 0
+                    ? "block"
+                    : "none";
+
+        }
+
+    }
+
+
+    /* =====================================================
+       BOOKING FILTER
+    ====================================================== */
+
+    function filterBookings() {
+
+        if (!bookingSearch) {
+            return;
+        }
+
+        const searchText =
+            bookingSearch.value
+                .toLowerCase()
+                .trim();
+
+        const selectedStatus =
+            bookingStatusFilter.value;
+
+        const cards =
+            document.querySelectorAll(
+                ".feature4-booking-card"
+            );
+
+        let visibleCount = 0;
+
+
+        cards.forEach(function (card) {
+
+            const cardSearch =
+                (card.dataset.search || "")
+                    .toLowerCase();
+
+            const cardStatus =
+                card.dataset.status || "";
+
+
+            const searchMatch =
+                searchText === "" ||
+                cardSearch.includes(searchText);
+
+            const statusMatch =
+                selectedStatus === "all" ||
+                cardStatus === selectedStatus;
+
+
+            if (searchMatch && statusMatch) {
+
+                card.classList.remove(
+                    "feature4-card-hidden"
+                );
+
+                visibleCount++;
+
+            } else {
+
+                card.classList.add(
+                    "feature4-card-hidden"
+                );
+
+            }
+
+        });
+
+
+        if (bookingFilterCount) {
+
+            bookingFilterCount.textContent =
+                "Showing " +
+                visibleCount +
+                " booking" +
+                (visibleCount === 1 ? "" : "s");
+
+        }
+
+
+        if (noBookingResults) {
+
+            noBookingResults.style.display =
+                cards.length > 0 && visibleCount === 0
+                    ? "block"
+                    : "none";
+
+        }
+
+    }
+
+
+    /* =====================================================
+       EVENT LISTENERS
+    ====================================================== */
+
+    if (applicationSearch) {
+
+        applicationSearch.addEventListener(
+            "input",
+            filterApplications
+        );
+
+    }
+
+
+    if (applicationStatusFilter) {
+
+        applicationStatusFilter.addEventListener(
+            "change",
+            filterApplications
+        );
+
+    }
+
+
+    if (bookingSearch) {
+
+        bookingSearch.addEventListener(
+            "input",
+            filterBookings
+        );
+
+    }
+
+
+    if (bookingStatusFilter) {
+
+        bookingStatusFilter.addEventListener(
+            "change",
+            filterBookings
+        );
+
+    }
+
+
+    /* =====================================================
+       RESET APPLICATION FILTER
+    ====================================================== */
+
+    window.resetApplicationFilters = function () {
+
+        if (applicationSearch) {
+
+            applicationSearch.value = "";
+
+        }
+
+        if (applicationStatusFilter) {
+
+            applicationStatusFilter.value = "all";
+
+        }
+
+        filterApplications();
+
+    };
+
+
+    /* =====================================================
+       RESET BOOKING FILTER
+    ====================================================== */
+
+    window.resetBookingFilters = function () {
+
+        if (bookingSearch) {
+
+            bookingSearch.value = "";
+
+        }
+
+        if (bookingStatusFilter) {
+
+            bookingStatusFilter.value = "all";
+
+        }
+
+        filterBookings();
+
+    };
+
+
+    /* =====================================================
+       INITIAL FILTER
+    ====================================================== */
+
+    filterApplications();
+
+    filterBookings();
+
+});
+
+</script>
 
 
 </body>
-
 </html>

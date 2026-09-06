@@ -1,443 +1,634 @@
-```html
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
-    <meta charset="UTF-8">
+```
+<meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-    <title>Apply for Bus Pass - Cloud Bus Pass System</title>
+<title>Apply for Bus Pass - Cloud Bus Pass System</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}">
+```
 
 </head>
 
 <body>
 
-    <!-- HEADER -->
+```
+<!-- HEADER -->
 
-    <header class="main-header">
+<header class="main-header">
 
-        <div class="header-content">
+    <div class="header-content">
 
-            <div class="logo">
-                🚌 Cloud Bus Pass
-            </div>
-
-            <a href="/dashboard"
-               class="header-logout">
-                Dashboard
-            </a>
-
+        <div class="logo">
+            🚌 Cloud Bus Pass
         </div>
 
-    </header>
+        <a href="/dashboard"
+           class="header-logout">
+            Dashboard
+        </a>
+
+    </div>
+
+</header>
 
 
-    <!-- MAIN -->
+<!-- MAIN -->
 
-    <main class="application-main">
+<main class="application-main">
 
-        <div class="application-page-header">
+    <div class="application-page-header">
 
-            <div class="application-page-icon">
-                🚌
-            </div>
-
-            <h1>
-                Apply for Bus Pass
-            </h1>
-
-            <p>
-                Enter your details below to submit your bus pass application.
-            </p>
-
+        <div class="application-page-icon">
+            🚌
         </div>
 
+        <h1>
+            Apply for Bus Pass
+        </h1>
 
-        <!-- ERROR MESSAGE -->
+        <p>
+            Enter your details below to submit your bus pass application.
+        </p>
 
-        {% if error %}
+    </div>
 
-        <div style="
-            background: #ffe5e5;
-            color: #b00020;
-            padding: 14px 18px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-weight: 600;
-        ">
 
-            ⚠️ {{ error }}
+    <!-- ERROR MESSAGE -->
 
-        </div>
+    {% if error %}
 
-        {% endif %}
+    <div style="
+        background: #ffe5e5;
+        color: #b00020;
+        padding: 14px 18px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        text-align: center;
+        font-weight: 600;
+    ">
 
+        ⚠️ {{ error }}
 
-        <!-- APPLICATION FORM -->
+    </div>
 
-        <form method="POST"
-              action="/apply"
-              class="application-form">
+    {% endif %}
 
 
-            <!-- PERSONAL DETAILS -->
+    <!-- APPLICATION FORM -->
 
-            <section class="form-section">
+    <form method="POST"
+          action="/apply"
+          class="application-form">
 
-                <div class="form-section-title">
 
-                    <span class="form-number">
-                        1
-                    </span>
+        <!-- PERSONAL DETAILS -->
 
-                    <div>
+        <section class="form-section">
 
-                        <h2>
-                            Personal Details
-                        </h2>
+            <div class="form-section-title">
 
-                        <p>
-                            Enter your basic information
-                        </p>
+                <span class="form-number">
+                    1
+                </span>
 
-                    </div>
+                <div>
 
-                </div>
-
-
-                <div class="form-grid">
-
-
-                    <!-- NAME -->
-
-                    <div class="form-group">
-
-                        <label for="name">
-                            Full Name
-                        </label>
-
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            placeholder="Enter your full name"
-                            required>
-
-                    </div>
-
-
-                    <!-- AGE -->
-
-                    <div class="form-group">
-
-                        <label for="age">
-                            Age
-                        </label>
-
-                        <input
-                            type="number"
-                            id="age"
-                            name="age"
-                            placeholder="Enter your age"
-                            min="1"
-                            max="100"
-                            required>
-
-                    </div>
-
-
-                    <!-- GENDER -->
-
-                    <div class="form-group">
-
-                        <label for="gender">
-                            Gender
-                        </label>
-
-                        <select
-                            id="gender"
-                            name="gender"
-                            required>
-
-                            <option value="">
-                                Select Gender
-                            </option>
-
-                            <option value="Male">
-                                Male
-                            </option>
-
-                            <option value="Female">
-                                Female
-                            </option>
-
-                            <option value="Other">
-                                Other
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- ROUTE DETAILS -->
-
-            <section class="form-section">
-
-                <div class="form-section-title">
-
-                    <span class="form-number">
-                        2
-                    </span>
-
-                    <div>
-
-                        <h2>
-                            Route Details
-                        </h2>
-
-                        <p>
-                            Enter your regular travel route
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="form-grid">
-
-
-                    <!-- SOURCE -->
-
-                    <div class="form-group">
-
-                        <label for="source">
-                            Starting Point
-                        </label>
-
-                        <input
-                            type="text"
-                            id="source"
-                            name="source"
-                            placeholder="Example: Hyderabad"
-                            required>
-
-                    </div>
-
-
-                    <!-- DESTINATION -->
-
-                    <div class="form-group">
-
-                        <label for="destination">
-                            Destination
-                        </label>
-
-                        <input
-                            type="text"
-                            id="destination"
-                            name="destination"
-                            placeholder="Example: Secunderabad"
-                            required>
-
-                    </div>
-
-                </div>
-
-
-                <!-- AVAILABLE ROUTES -->
-
-                <div style="
-                    margin-top: 18px;
-                    padding: 16px;
-                    border-radius: 10px;
-                    background: #f5f7fb;
-                    border: 1px solid #e2e6ef;
-                ">
-
-                    <strong>
-                        🚌 Currently Supported Routes
-                    </strong>
-
-                    <p style="margin: 8px 0 0;">
-                        Hyderabad → Secunderabad |
-                        Hyderabad → Kukatpally |
-                        Hyderabad → Uppal |
-                        Hyderabad → LB Nagar |
-                        Secunderabad → Kukatpally |
-                        Secunderabad → Uppal |
-                        Secunderabad → LB Nagar |
-                        Hyderabad → Gachibowli
-                    </p>
-
-                </div>
-
-            </section>
-
-
-            <!-- PASS DETAILS -->
-
-            <section class="form-section">
-
-                <div class="form-section-title">
-
-                    <span class="form-number">
-                        3
-                    </span>
-
-                    <div>
-
-                        <h2>
-                            Pass Details
-                        </h2>
-
-                        <p>
-                            Select your preferred bus pass type
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="form-grid">
-
-
-                    <!-- PASS TYPE -->
-
-                    <div class="form-group">
-
-                        <label for="pass_type">
-                            Pass Type
-                        </label>
-
-                        <select
-                            id="pass_type"
-                            name="pass_type"
-                            required>
-
-                            <option value="">
-                                Select Pass Type
-                            </option>
-
-                            <option value="Monthly">
-                                Monthly Pass
-                            </option>
-
-                            <option value="Quarterly">
-                                Quarterly Pass
-                            </option>
-
-                            <option value="Yearly">
-                                Yearly Pass
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <!-- START DATE -->
-
-                    <div class="form-group">
-
-                        <label for="start_date">
-                            Start Date
-                        </label>
-
-                        <input
-                            type="date"
-                            id="start_date"
-                            name="start_date"
-                            required>
-
-                    </div>
-
-                </div>
-
-
-                <!-- PAYMENT INFORMATION -->
-
-                <div style="
-                    margin-top: 18px;
-                    padding: 16px;
-                    border-radius: 10px;
-                    background: #eef8ff;
-                    border: 1px solid #cfe9ff;
-                ">
-
-                    💳 <strong>Route-Based Pricing</strong>
-
-                    <p style="margin: 8px 0 0;">
-                        Your bus pass fee will be calculated automatically
-                        based on your selected route and pass type.
-                    </p>
-
-                </div>
-
-            </section>
-
-
-            <!-- SUBMIT -->
-
-            <section class="form-submit-section">
-
-                <div class="form-note">
-
-                    <span>
-                        🔒
-                    </span>
+                    <h2>
+                        Personal Details
+                    </h2>
 
                     <p>
-                        Please check all your details before submitting
-                        your application.
+                        Enter your basic information
                     </p>
 
                 </div>
 
-
-                <button
-                    type="submit"
-                    class="submit-application-button">
-
-                    🚌 Continue to Payment
-
-                </button>
-
-            </section>
-
-        </form>
-
-    </main>
+            </div>
 
 
-    <!-- FOOTER -->
+            <div class="form-grid">
 
-    <footer class="main-footer">
 
-        <p>
-            © 2026 Cloud Bus Pass System
-        </p>
+                <!-- NAME -->
 
-        <p>
-            Smart • Simple • Digital
-        </p>
+                <div class="form-group">
 
-    </footer>
+                    <label for="name">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your full name"
+                        required>
+
+                </div>
+
+
+                <!-- AGE -->
+
+                <div class="form-group">
+
+                    <label for="age">
+                        Age
+                    </label>
+
+                    <input
+                        type="number"
+                        id="age"
+                        name="age"
+                        placeholder="Enter your age"
+                        min="1"
+                        max="100"
+                        required>
+
+                </div>
+
+
+                <!-- GENDER -->
+
+                <div class="form-group">
+
+                    <label for="gender">
+                        Gender
+                    </label>
+
+                    <select
+                        id="gender"
+                        name="gender"
+                        required>
+
+                        <option value="">
+                            Select Gender
+                        </option>
+
+                        <option value="Male">
+                            Male
+                        </option>
+
+                        <option value="Female">
+                            Female
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ROUTE DETAILS -->
+
+        <section class="form-section">
+
+            <div class="form-section-title">
+
+                <span class="form-number">
+                    2
+                </span>
+
+                <div>
+
+                    <h2>
+                        Route Details
+                    </h2>
+
+                    <p>
+                        Select your regular travel route
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+                <!-- SOURCE -->
+
+                <div class="form-group">
+
+                    <label for="source">
+                        Starting Point
+                    </label>
+
+                    <select
+                        id="source"
+                        name="source"
+                        required>
+
+                        <option value="">
+                            Select Starting City
+                        </option>
+
+                        <optgroup label="Andhra Pradesh">
+                            <option value="Vijayawada">Vijayawada</option>
+                            <option value="Visakhapatnam">Visakhapatnam</option>
+                            <option value="Tirupati">Tirupati</option>
+                            <option value="Guntur">Guntur</option>
+                            <option value="Nellore">Nellore</option>
+                        </optgroup>
+
+                        <optgroup label="Telangana">
+                            <option value="Hyderabad">Hyderabad</option>
+                            <option value="Secunderabad">Secunderabad</option>
+                            <option value="Warangal">Warangal</option>
+                            <option value="Nizamabad">Nizamabad</option>
+                            <option value="Karimnagar">Karimnagar</option>
+                        </optgroup>
+
+                        <optgroup label="Karnataka">
+                            <option value="Bengaluru">Bengaluru</option>
+                            <option value="Mysuru">Mysuru</option>
+                            <option value="Mangaluru">Mangaluru</option>
+                            <option value="Hubballi">Hubballi</option>
+                        </optgroup>
+
+                        <optgroup label="Tamil Nadu">
+                            <option value="Chennai">Chennai</option>
+                            <option value="Coimbatore">Coimbatore</option>
+                            <option value="Madurai">Madurai</option>
+                            <option value="Salem">Salem</option>
+                            <option value="Tiruchirappalli">Tiruchirappalli</option>
+                        </optgroup>
+
+                        <optgroup label="Maharashtra">
+                            <option value="Mumbai">Mumbai</option>
+                            <option value="Pune">Pune</option>
+                            <option value="Nagpur">Nagpur</option>
+                            <option value="Nashik">Nashik</option>
+                        </optgroup>
+
+                        <optgroup label="Delhi & North India">
+                            <option value="Delhi">Delhi</option>
+                            <option value="Jaipur">Jaipur</option>
+                            <option value="Chandigarh">Chandigarh</option>
+                            <option value="Lucknow">Lucknow</option>
+                            <option value="Agra">Agra</option>
+                            <option value="Dehradun">Dehradun</option>
+                        </optgroup>
+
+                        <optgroup label="West Bengal & East India">
+                            <option value="Kolkata">Kolkata</option>
+                            <option value="Bhubaneswar">Bhubaneswar</option>
+                            <option value="Ranchi">Ranchi</option>
+                            <option value="Patna">Patna</option>
+                        </optgroup>
+
+                        <optgroup label="Kerala">
+                            <option value="Kochi">Kochi</option>
+                            <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+                            <option value="Kozhikode">Kozhikode</option>
+                        </optgroup>
+
+                        <optgroup label="Gujarat">
+                            <option value="Ahmedabad">Ahmedabad</option>
+                            <option value="Surat">Surat</option>
+                            <option value="Vadodara">Vadodara</option>
+                            <option value="Rajkot">Rajkot</option>
+                        </optgroup>
+
+                    </select>
+
+                </div>
+
+
+                <!-- DESTINATION -->
+
+                <div class="form-group">
+
+                    <label for="destination">
+                        Destination
+                    </label>
+
+                    <select
+                        id="destination"
+                        name="destination"
+                        required>
+
+                        <option value="">
+                            Select Destination City
+                        </option>
+
+                        <optgroup label="Andhra Pradesh">
+                            <option value="Vijayawada">Vijayawada</option>
+                            <option value="Visakhapatnam">Visakhapatnam</option>
+                            <option value="Tirupati">Tirupati</option>
+                            <option value="Guntur">Guntur</option>
+                            <option value="Nellore">Nellore</option>
+                        </optgroup>
+
+                        <optgroup label="Telangana">
+                            <option value="Hyderabad">Hyderabad</option>
+                            <option value="Secunderabad">Secunderabad</option>
+                            <option value="Warangal">Warangal</option>
+                            <option value="Nizamabad">Nizamabad</option>
+                            <option value="Karimnagar">Karimnagar</option>
+                        </optgroup>
+
+                        <optgroup label="Karnataka">
+                            <option value="Bengaluru">Bengaluru</option>
+                            <option value="Mysuru">Mysuru</option>
+                            <option value="Mangaluru">Mangaluru</option>
+                            <option value="Hubballi">Hubballi</option>
+                        </optgroup>
+
+                        <optgroup label="Tamil Nadu">
+                            <option value="Chennai">Chennai</option>
+                            <option value="Coimbatore">Coimbatore</option>
+                            <option value="Madurai">Madurai</option>
+                            <option value="Salem">Salem</option>
+                            <option value="Tiruchirappalli">Tiruchirappalli</option>
+                        </optgroup>
+
+                        <optgroup label="Maharashtra">
+                            <option value="Mumbai">Mumbai</option>
+                            <option value="Pune">Pune</option>
+                            <option value="Nagpur">Nagpur</option>
+                            <option value="Nashik">Nashik</option>
+                        </optgroup>
+
+                        <optgroup label="Delhi & North India">
+                            <option value="Delhi">Delhi</option>
+                            <option value="Jaipur">Jaipur</option>
+                            <option value="Chandigarh">Chandigarh</option>
+                            <option value="Lucknow">Lucknow</option>
+                            <option value="Agra">Agra</option>
+                            <option value="Dehradun">Dehradun</option>
+                        </optgroup>
+
+                        <optgroup label="West Bengal & East India">
+                            <option value="Kolkata">Kolkata</option>
+                            <option value="Bhubaneswar">Bhubaneswar</option>
+                            <option value="Ranchi">Ranchi</option>
+                            <option value="Patna">Patna</option>
+                        </optgroup>
+
+                        <optgroup label="Kerala">
+                            <option value="Kochi">Kochi</option>
+                            <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+                            <option value="Kozhikode">Kozhikode</option>
+                        </optgroup>
+
+                        <optgroup label="Gujarat">
+                            <option value="Ahmedabad">Ahmedabad</option>
+                            <option value="Surat">Surat</option>
+                            <option value="Vadodara">Vadodara</option>
+                            <option value="Rajkot">Rajkot</option>
+                        </optgroup>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- ROUTE INFORMATION -->
+
+            <div style="
+                margin-top: 18px;
+                padding: 16px;
+                border-radius: 10px;
+                background: #f5f7fb;
+                border: 1px solid #e2e6ef;
+            ">
+
+                <strong>
+                    🇮🇳 India-Wide Route Selection
+                </strong>
+
+                <p style="margin: 8px 0 0;">
+
+                    Select your starting city and destination
+                    from the available cities across India.
+
+                    Route availability and pricing will be
+                    calculated automatically.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- PASS DETAILS -->
+
+        <section class="form-section">
+
+            <div class="form-section-title">
+
+                <span class="form-number">
+                    3
+                </span>
+
+                <div>
+
+                    <h2>
+                        Pass Details
+                    </h2>
+
+                    <p>
+                        Select your preferred bus pass type
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+                <!-- PASS TYPE -->
+
+                <div class="form-group">
+
+                    <label for="pass_type">
+                        Pass Type
+                    </label>
+
+                    <select
+                        id="pass_type"
+                        name="pass_type"
+                        required>
+
+                        <option value="">
+                            Select Pass Type
+                        </option>
+
+                        <option value="Monthly">
+                            Monthly Pass
+                        </option>
+
+                        <option value="Quarterly">
+                            Quarterly Pass
+                        </option>
+
+                        <option value="Yearly">
+                            Yearly Pass
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- START DATE -->
+
+                <div class="form-group">
+
+                    <label for="start_date">
+                        Start Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="start_date"
+                        name="start_date"
+                        required>
+
+                </div>
+
+            </div>
+
+
+            <!-- PAYMENT INFORMATION -->
+
+            <div style="
+                margin-top: 18px;
+                padding: 16px;
+                border-radius: 10px;
+                background: #eef8ff;
+                border: 1px solid #cfe9ff;
+            ">
+
+                💳 <strong>Route-Based Pricing</strong>
+
+                <p style="margin: 8px 0 0;">
+
+                    Your bus pass fee will be calculated automatically
+                    based on your selected route and pass type.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- SUBMIT -->
+
+        <section class="form-submit-section">
+
+            <div class="form-note">
+
+                <span>
+                    🔒
+                </span>
+
+                <p>
+                    Please check all your details before submitting
+                    your application.
+                </p>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="submit-application-button">
+
+                🚌 Continue to Payment
+
+            </button>
+
+        </section>
+
+    </form>
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer class="main-footer">
+
+    <p>
+        © 2026 Cloud Bus Pass System
+    </p>
+
+    <p>
+        Smart • Simple • Digital
+    </p>
+
+</footer>
+
+
+<!-- ROUTE VALIDATION -->
+
+<script>
+
+    const sourceSelect =
+        document.getElementById("source");
+
+    const destinationSelect =
+        document.getElementById("destination");
+
+
+    function validateRoute() {
+
+        if (
+            sourceSelect.value !== "" &&
+            destinationSelect.value !== "" &&
+            sourceSelect.value === destinationSelect.value
+        ) {
+
+            destinationSelect.setCustomValidity(
+                "Starting point and destination cannot be the same."
+            );
+
+        } else {
+
+            destinationSelect.setCustomValidity("");
+
+        }
+
+    }
+
+
+    sourceSelect.addEventListener(
+        "change",
+        validateRoute
+    );
+
+    destinationSelect.addEventListener(
+        "change",
+        validateRoute
+    );
+
+</script>
+```
 
 </body>
 
 </html>
-```

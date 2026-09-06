@@ -3763,3 +3763,108 @@ button {
         padding: 14px;
     }
 }
+
+/* =====================================================
+   FEATURE 4 — SEARCH & FILTER
+===================================================== */
+
+.feature4-filter-panel {
+    margin: 0 0 22px;
+    padding: 18px;
+    background: #f8fafc;
+    border: 1px solid #dbe3ee;
+    border-radius: 12px;
+}
+
+.feature4-filter-title {
+    margin-bottom: 14px;
+    color: #1e3a8a;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.feature4-filter-grid {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) 180px auto;
+    gap: 12px;
+    align-items: end;
+}
+
+.feature4-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.feature4-field label {
+    color: #475569;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.feature4-field input,
+.feature4-field select {
+    width: 100%;
+    min-height: 42px;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #1f2937;
+    font-size: 13px;
+    outline: none;
+}
+
+.feature4-field input:focus,
+.feature4-field select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+.feature4-reset-btn {
+    min-height: 42px;
+    padding: 10px 17px;
+    border: none;
+    border-radius: 8px;
+    background: #1e3a8a;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.feature4-reset-btn:hover {
+    background: #172554;
+    transform: translateY(-1px);
+}
+
+.feature4-filter-count {
+    margin-top: 10px;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.application-filter-row,
+.booking-filter-row {
+    transition: background-color 0.15s ease;
+}
+
+.application-filter-row:hover,
+.booking-filter-row:hover {
+    background-color: #f8fafc;
+}
+
+@media (max-width: 700px) {
+
+    .feature4-filter-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .feature4-reset-btn {
+        width: 100%;
+    }
+
+}
