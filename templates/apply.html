@@ -1,26 +1,24 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
 
-```
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<title>Apply for Bus Pass - Cloud Bus Pass System</title>
+    <title>Apply for Bus Pass - Cloud Bus Pass System</title>
 
-<link rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}">
-```
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 
 </head>
 
+
 <body>
 
-```
+
 <!-- HEADER -->
 
 <header class="main-header">
@@ -39,6 +37,7 @@
     </div>
 
 </header>
+
 
 
 <!-- MAIN -->
@@ -62,6 +61,7 @@
     </div>
 
 
+
     <!-- ERROR MESSAGE -->
 
     {% if error %}
@@ -81,6 +81,7 @@
     </div>
 
     {% endif %}
+
 
 
     <!-- APPLICATION FORM -->
@@ -115,6 +116,7 @@
             </div>
 
 
+
             <div class="form-grid">
 
 
@@ -136,6 +138,7 @@
                 </div>
 
 
+
                 <!-- AGE -->
 
                 <div class="form-group">
@@ -154,6 +157,7 @@
                         required>
 
                 </div>
+
 
 
                 <!-- GENDER -->
@@ -194,6 +198,7 @@
         </section>
 
 
+
         <!-- ROUTE DETAILS -->
 
         <section class="form-section">
@@ -219,7 +224,121 @@
             </div>
 
 
-            <div class="form-grid">
+
+            <!-- STATE -->
+
+            <div class="form-group">
+
+                <label for="state">
+                    🗺️ Select State
+                </label>
+
+                <select
+                    id="state"
+                    required>
+
+                    <option value="">
+                        Select State
+                    </option>
+
+                    <option value="Andhra Pradesh">
+                        Andhra Pradesh
+                    </option>
+
+                    <option value="Telangana">
+                        Telangana
+                    </option>
+
+                    <option value="Karnataka">
+                        Karnataka
+                    </option>
+
+                    <option value="Tamil Nadu">
+                        Tamil Nadu
+                    </option>
+
+                    <option value="Maharashtra">
+                        Maharashtra
+                    </option>
+
+                    <option value="Delhi NCR">
+                        Delhi NCR
+                    </option>
+
+                    <option value="Kerala">
+                        Kerala
+                    </option>
+
+                    <option value="West Bengal">
+                        West Bengal
+                    </option>
+
+                    <option value="Odisha">
+                        Odisha
+                    </option>
+
+                    <option value="Gujarat">
+                        Gujarat
+                    </option>
+
+                    <option value="Rajasthan">
+                        Rajasthan
+                    </option>
+
+                    <option value="Uttar Pradesh">
+                        Uttar Pradesh
+                    </option>
+
+                    <option value="Bihar">
+                        Bihar
+                    </option>
+
+                    <option value="Jharkhand">
+                        Jharkhand
+                    </option>
+
+                    <option value="Chandigarh">
+                        Chandigarh
+                    </option>
+
+                    <option value="Uttarakhand">
+                        Uttarakhand
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- ROUTE -->
+
+            <div class="form-group"
+                 style="margin-top: 18px;">
+
+                <label for="route">
+                    🚌 Select Bus Route
+                </label>
+
+                <select
+                    id="route"
+                    required
+                    disabled>
+
+                    <option value="">
+                        First Select State
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- SOURCE AND DESTINATION -->
+
+            <div class="form-grid"
+                 style="margin-top: 18px;">
 
 
                 <!-- SOURCE -->
@@ -230,85 +349,16 @@
                         Starting Point
                     </label>
 
-                    <select
+                    <input
+                        type="text"
                         id="source"
                         name="source"
+                        placeholder="Starting city"
+                        readonly
                         required>
 
-                        <option value="">
-                            Select Starting City
-                        </option>
-
-                        <optgroup label="Andhra Pradesh">
-                            <option value="Vijayawada">Vijayawada</option>
-                            <option value="Visakhapatnam">Visakhapatnam</option>
-                            <option value="Tirupati">Tirupati</option>
-                            <option value="Guntur">Guntur</option>
-                            <option value="Nellore">Nellore</option>
-                        </optgroup>
-
-                        <optgroup label="Telangana">
-                            <option value="Hyderabad">Hyderabad</option>
-                            <option value="Secunderabad">Secunderabad</option>
-                            <option value="Warangal">Warangal</option>
-                            <option value="Nizamabad">Nizamabad</option>
-                            <option value="Karimnagar">Karimnagar</option>
-                        </optgroup>
-
-                        <optgroup label="Karnataka">
-                            <option value="Bengaluru">Bengaluru</option>
-                            <option value="Mysuru">Mysuru</option>
-                            <option value="Mangaluru">Mangaluru</option>
-                            <option value="Hubballi">Hubballi</option>
-                        </optgroup>
-
-                        <optgroup label="Tamil Nadu">
-                            <option value="Chennai">Chennai</option>
-                            <option value="Coimbatore">Coimbatore</option>
-                            <option value="Madurai">Madurai</option>
-                            <option value="Salem">Salem</option>
-                            <option value="Tiruchirappalli">Tiruchirappalli</option>
-                        </optgroup>
-
-                        <optgroup label="Maharashtra">
-                            <option value="Mumbai">Mumbai</option>
-                            <option value="Pune">Pune</option>
-                            <option value="Nagpur">Nagpur</option>
-                            <option value="Nashik">Nashik</option>
-                        </optgroup>
-
-                        <optgroup label="Delhi & North India">
-                            <option value="Delhi">Delhi</option>
-                            <option value="Jaipur">Jaipur</option>
-                            <option value="Chandigarh">Chandigarh</option>
-                            <option value="Lucknow">Lucknow</option>
-                            <option value="Agra">Agra</option>
-                            <option value="Dehradun">Dehradun</option>
-                        </optgroup>
-
-                        <optgroup label="West Bengal & East India">
-                            <option value="Kolkata">Kolkata</option>
-                            <option value="Bhubaneswar">Bhubaneswar</option>
-                            <option value="Ranchi">Ranchi</option>
-                            <option value="Patna">Patna</option>
-                        </optgroup>
-
-                        <optgroup label="Kerala">
-                            <option value="Kochi">Kochi</option>
-                            <option value="Thiruvananthapuram">Thiruvananthapuram</option>
-                            <option value="Kozhikode">Kozhikode</option>
-                        </optgroup>
-
-                        <optgroup label="Gujarat">
-                            <option value="Ahmedabad">Ahmedabad</option>
-                            <option value="Surat">Surat</option>
-                            <option value="Vadodara">Vadodara</option>
-                            <option value="Rajkot">Rajkot</option>
-                        </optgroup>
-
-                    </select>
-
                 </div>
+
 
 
                 <!-- DESTINATION -->
@@ -319,87 +369,45 @@
                         Destination
                     </label>
 
-                    <select
+                    <input
+                        type="text"
                         id="destination"
                         name="destination"
+                        placeholder="Destination city"
+                        readonly
                         required>
-
-                        <option value="">
-                            Select Destination City
-                        </option>
-
-                        <optgroup label="Andhra Pradesh">
-                            <option value="Vijayawada">Vijayawada</option>
-                            <option value="Visakhapatnam">Visakhapatnam</option>
-                            <option value="Tirupati">Tirupati</option>
-                            <option value="Guntur">Guntur</option>
-                            <option value="Nellore">Nellore</option>
-                        </optgroup>
-
-                        <optgroup label="Telangana">
-                            <option value="Hyderabad">Hyderabad</option>
-                            <option value="Secunderabad">Secunderabad</option>
-                            <option value="Warangal">Warangal</option>
-                            <option value="Nizamabad">Nizamabad</option>
-                            <option value="Karimnagar">Karimnagar</option>
-                        </optgroup>
-
-                        <optgroup label="Karnataka">
-                            <option value="Bengaluru">Bengaluru</option>
-                            <option value="Mysuru">Mysuru</option>
-                            <option value="Mangaluru">Mangaluru</option>
-                            <option value="Hubballi">Hubballi</option>
-                        </optgroup>
-
-                        <optgroup label="Tamil Nadu">
-                            <option value="Chennai">Chennai</option>
-                            <option value="Coimbatore">Coimbatore</option>
-                            <option value="Madurai">Madurai</option>
-                            <option value="Salem">Salem</option>
-                            <option value="Tiruchirappalli">Tiruchirappalli</option>
-                        </optgroup>
-
-                        <optgroup label="Maharashtra">
-                            <option value="Mumbai">Mumbai</option>
-                            <option value="Pune">Pune</option>
-                            <option value="Nagpur">Nagpur</option>
-                            <option value="Nashik">Nashik</option>
-                        </optgroup>
-
-                        <optgroup label="Delhi & North India">
-                            <option value="Delhi">Delhi</option>
-                            <option value="Jaipur">Jaipur</option>
-                            <option value="Chandigarh">Chandigarh</option>
-                            <option value="Lucknow">Lucknow</option>
-                            <option value="Agra">Agra</option>
-                            <option value="Dehradun">Dehradun</option>
-                        </optgroup>
-
-                        <optgroup label="West Bengal & East India">
-                            <option value="Kolkata">Kolkata</option>
-                            <option value="Bhubaneswar">Bhubaneswar</option>
-                            <option value="Ranchi">Ranchi</option>
-                            <option value="Patna">Patna</option>
-                        </optgroup>
-
-                        <optgroup label="Kerala">
-                            <option value="Kochi">Kochi</option>
-                            <option value="Thiruvananthapuram">Thiruvananthapuram</option>
-                            <option value="Kozhikode">Kozhikode</option>
-                        </optgroup>
-
-                        <optgroup label="Gujarat">
-                            <option value="Ahmedabad">Ahmedabad</option>
-                            <option value="Surat">Surat</option>
-                            <option value="Vadodara">Vadodara</option>
-                            <option value="Rajkot">Rajkot</option>
-                        </optgroup>
-
-                    </select>
 
                 </div>
 
             </div>
+
+
+
+            <!-- SELECTED ROUTE -->
+
+            <div id="selectedRouteBox"
+                 style="
+                    display: none;
+                    margin-top: 18px;
+                    padding: 16px;
+                    border-radius: 10px;
+                    background: #f5f7fb;
+                    border: 1px solid #e2e6ef;
+                 ">
+
+                <strong>
+                    🚌 Selected Route
+                </strong>
+
+                <p id="selectedRouteText"
+                   style="
+                       margin: 8px 0 0;
+                       font-weight: 600;
+                   ">
+                </p>
+
+            </div>
+
 
 
             <!-- ROUTE INFORMATION -->
@@ -418,8 +426,9 @@
 
                 <p style="margin: 8px 0 0;">
 
-                    Select your starting city and destination
-                    from the available cities across India.
+                    Select a state and then choose an available
+                    bus route. The starting point and destination
+                    will be filled automatically.
 
                     Route availability and pricing will be
                     calculated automatically.
@@ -429,6 +438,7 @@
             </div>
 
         </section>
+
 
 
         <!-- PASS DETAILS -->
@@ -454,6 +464,7 @@
                 </div>
 
             </div>
+
 
 
             <div class="form-grid">
@@ -493,6 +504,7 @@
                 </div>
 
 
+
                 <!-- START DATE -->
 
                 <div class="form-group">
@@ -510,6 +522,7 @@
                 </div>
 
             </div>
+
 
 
             <!-- PAYMENT INFORMATION -->
@@ -536,6 +549,7 @@
         </section>
 
 
+
         <!-- SUBMIT -->
 
         <section class="form-submit-section">
@@ -554,6 +568,7 @@
             </div>
 
 
+
             <button
                 type="submit"
                 class="submit-application-button">
@@ -564,9 +579,11 @@
 
         </section>
 
+
     </form>
 
 </main>
+
 
 
 <!-- FOOTER -->
@@ -584,50 +601,780 @@
 </footer>
 
 
-<!-- ROUTE VALIDATION -->
+
+<!-- INDIA-WIDE ROUTE SELECTION -->
 
 <script>
 
-    const sourceSelect =
+    const stateSelect =
+        document.getElementById("state");
+
+    const routeSelect =
+        document.getElementById("route");
+
+    const sourceInput =
         document.getElementById("source");
 
-    const destinationSelect =
+    const destinationInput =
         document.getElementById("destination");
 
+    const selectedRouteBox =
+        document.getElementById("selectedRouteBox");
 
-    function validateRoute() {
+    const selectedRouteText =
+        document.getElementById("selectedRouteText");
 
-        if (
-            sourceSelect.value !== "" &&
-            destinationSelect.value !== "" &&
-            sourceSelect.value === destinationSelect.value
-        ) {
 
-            destinationSelect.setCustomValidity(
-                "Starting point and destination cannot be the same."
-            );
 
-        } else {
+    /*
+        INDIA-WIDE BUS ROUTES
 
-            destinationSelect.setCustomValidity("");
+        These are project-configured routes.
+        They are not live transport schedules.
+    */
+
+    const routesByState = {
+
+
+        "Andhra Pradesh": [
+
+            {
+                source: "Vijayawada",
+                destination: "Guntur"
+            },
+
+            {
+                source: "Vijayawada",
+                destination: "Amaravati"
+            },
+
+            {
+                source: "Visakhapatnam",
+                destination: "Vizianagaram"
+            },
+
+            {
+                source: "Tirupati",
+                destination: "Nellore"
+            },
+
+            {
+                source: "Guntur",
+                destination: "Vijayawada"
+            }
+
+        ],
+
+
+
+        "Telangana": [
+
+            {
+                source: "Hyderabad",
+                destination: "Secunderabad"
+            },
+
+            {
+                source: "Hyderabad",
+                destination: "Kukatpally"
+            },
+
+            {
+                source: "Hyderabad",
+                destination: "Uppal"
+            },
+
+            {
+                source: "Hyderabad",
+                destination: "LB Nagar"
+            },
+
+            {
+                source: "Hyderabad",
+                destination: "Gachibowli"
+            },
+
+            {
+                source: "Hyderabad",
+                destination: "Madhapur"
+            },
+
+            {
+                source: "Hyderabad",
+                destination: "Mehdipatnam"
+            },
+
+            {
+                source: "Hyderabad",
+                destination: "Miyapur"
+            },
+
+            {
+                source: "Secunderabad",
+                destination: "Kukatpally"
+            },
+
+            {
+                source: "Secunderabad",
+                destination: "Uppal"
+            },
+
+            {
+                source: "Secunderabad",
+                destination: "LB Nagar"
+            },
+
+            {
+                source: "Warangal",
+                destination: "Hanamkonda"
+            },
+
+            {
+                source: "Nizamabad",
+                destination: "Hyderabad"
+            },
+
+            {
+                source: "Karimnagar",
+                destination: "Hyderabad"
+            }
+
+        ],
+
+
+
+        "Karnataka": [
+
+            {
+                source: "Bengaluru",
+                destination: "Mysuru"
+            },
+
+            {
+                source: "Bengaluru",
+                destination: "Tumakuru"
+            },
+
+            {
+                source: "Bengaluru",
+                destination: "Hosur"
+            },
+
+            {
+                source: "Bengaluru",
+                destination: "Electronic City"
+            },
+
+            {
+                source: "Bengaluru",
+                destination: "Whitefield"
+            },
+
+            {
+                source: "Mysuru",
+                destination: "Bengaluru"
+            },
+
+            {
+                source: "Mangaluru",
+                destination: "Udupi"
+            },
+
+            {
+                source: "Hubballi",
+                destination: "Dharwad"
+            }
+
+        ],
+
+
+
+        "Tamil Nadu": [
+
+            {
+                source: "Chennai",
+                destination: "Tambaram"
+            },
+
+            {
+                source: "Chennai",
+                destination: "Guindy"
+            },
+
+            {
+                source: "Chennai",
+                destination: "Chengalpattu"
+            },
+
+            {
+                source: "Chennai",
+                destination: "Coimbatore"
+            },
+
+            {
+                source: "Coimbatore",
+                destination: "Tiruppur"
+            },
+
+            {
+                source: "Madurai",
+                destination: "Dindigul"
+            },
+
+            {
+                source: "Salem",
+                destination: "Erode"
+            },
+
+            {
+                source: "Tiruchirappalli",
+                destination: "Thanjavur"
+            }
+
+        ],
+
+
+
+        "Maharashtra": [
+
+            {
+                source: "Mumbai",
+                destination: "Thane"
+            },
+
+            {
+                source: "Mumbai",
+                destination: "Navi Mumbai"
+            },
+
+            {
+                source: "Mumbai",
+                destination: "Kalyan"
+            },
+
+            {
+                source: "Pune",
+                destination: "Mumbai"
+            },
+
+            {
+                source: "Pune",
+                destination: "Pimpri-Chinchwad"
+            },
+
+            {
+                source: "Nagpur",
+                destination: "Wardha"
+            },
+
+            {
+                source: "Nashik",
+                destination: "Mumbai"
+            }
+
+        ],
+
+
+
+        "Delhi NCR": [
+
+            {
+                source: "Delhi",
+                destination: "Noida"
+            },
+
+            {
+                source: "Delhi",
+                destination: "Gurugram"
+            },
+
+            {
+                source: "Delhi",
+                destination: "Ghaziabad"
+            },
+
+            {
+                source: "Delhi",
+                destination: "Faridabad"
+            },
+
+            {
+                source: "Noida",
+                destination: "Greater Noida"
+            }
+
+        ],
+
+
+
+        "Kerala": [
+
+            {
+                source: "Kochi",
+                destination: "Aluva"
+            },
+
+            {
+                source: "Kochi",
+                destination: "Ernakulam"
+            },
+
+            {
+                source: "Thiruvananthapuram",
+                destination: "Kollam"
+            },
+
+            {
+                source: "Kozhikode",
+                destination: "Kannur"
+            }
+
+        ],
+
+
+
+        "West Bengal": [
+
+            {
+                source: "Kolkata",
+                destination: "Howrah"
+            },
+
+            {
+                source: "Kolkata",
+                destination: "Salt Lake"
+            },
+
+            {
+                source: "Kolkata",
+                destination: "New Town"
+            },
+
+            {
+                source: "Howrah",
+                destination: "Kolkata"
+            }
+
+        ],
+
+
+
+        "Odisha": [
+
+            {
+                source: "Bhubaneswar",
+                destination: "Cuttack"
+            },
+
+            {
+                source: "Bhubaneswar",
+                destination: "Puri"
+            },
+
+            {
+                source: "Cuttack",
+                destination: "Bhubaneswar"
+            }
+
+        ],
+
+
+
+        "Gujarat": [
+
+            {
+                source: "Ahmedabad",
+                destination: "Gandhinagar"
+            },
+
+            {
+                source: "Ahmedabad",
+                destination: "Vadodara"
+            },
+
+            {
+                source: "Surat",
+                destination: "Vadodara"
+            },
+
+            {
+                source: "Vadodara",
+                destination: "Ahmedabad"
+            },
+
+            {
+                source: "Rajkot",
+                destination: "Ahmedabad"
+            }
+
+        ],
+
+
+
+        "Rajasthan": [
+
+            {
+                source: "Jaipur",
+                destination: "Ajmer"
+            },
+
+            {
+                source: "Jaipur",
+                destination: "Alwar"
+            },
+
+            {
+                source: "Jaipur",
+                destination: "Kota"
+            },
+
+            {
+                source: "Jodhpur",
+                destination: "Jaipur"
+            }
+
+        ],
+
+
+
+        "Uttar Pradesh": [
+
+            {
+                source: "Lucknow",
+                destination: "Kanpur"
+            },
+
+            {
+                source: "Lucknow",
+                destination: "Agra"
+            },
+
+            {
+                source: "Agra",
+                destination: "Mathura"
+            },
+
+            {
+                source: "Noida",
+                destination: "Agra"
+            }
+
+        ],
+
+
+
+        "Bihar": [
+
+            {
+                source: "Patna",
+                destination: "Gaya"
+            },
+
+            {
+                source: "Patna",
+                destination: "Muzaffarpur"
+            },
+
+            {
+                source: "Patna",
+                destination: "Nalanda"
+            }
+
+        ],
+
+
+
+        "Jharkhand": [
+
+            {
+                source: "Ranchi",
+                destination: "Jamshedpur"
+            },
+
+            {
+                source: "Ranchi",
+                destination: "Dhanbad"
+            },
+
+            {
+                source: "Jamshedpur",
+                destination: "Ranchi"
+            }
+
+        ],
+
+
+
+        "Chandigarh": [
+
+            {
+                source: "Chandigarh",
+                destination: "Panchkula"
+            },
+
+            {
+                source: "Chandigarh",
+                destination: "Mohali"
+            },
+
+            {
+                source: "Chandigarh",
+                destination: "Ambala"
+            }
+
+        ],
+
+
+
+        "Uttarakhand": [
+
+            {
+                source: "Dehradun",
+                destination: "Haridwar"
+            },
+
+            {
+                source: "Dehradun",
+                destination: "Rishikesh"
+            },
+
+            {
+                source: "Haridwar",
+                destination: "Rishikesh"
+            }
+
+        ]
+
+    };
+
+
+
+    /*
+
+        WHEN STATE CHANGES
+
+    */
+
+    stateSelect.addEventListener("change", function () {
+
+
+        const selectedState =
+            stateSelect.value;
+
+
+        routeSelect.innerHTML =
+            '<option value="">Select Bus Route</option>';
+
+
+        sourceInput.value = "";
+
+        destinationInput.value = "";
+
+        selectedRouteBox.style.display =
+            "none";
+
+
+        if (!selectedState) {
+
+            routeSelect.disabled = true;
+
+            return;
 
         }
 
-    }
+
+        const routes =
+            routesByState[selectedState] || [];
 
 
-    sourceSelect.addEventListener(
-        "change",
-        validateRoute
-    );
+        routes.forEach(function(route, index) {
 
-    destinationSelect.addEventListener(
-        "change",
-        validateRoute
-    );
+
+            const option =
+                document.createElement("option");
+
+
+            option.value =
+                index;
+
+
+            option.textContent =
+                route.source +
+                " → " +
+                route.destination;
+
+
+            routeSelect.appendChild(option);
+
+        });
+
+
+        routeSelect.disabled =
+            false;
+
+    });
+
+
+
+    /*
+
+        WHEN ROUTE CHANGES
+
+    */
+
+    routeSelect.addEventListener("change", function () {
+
+
+        const selectedState =
+            stateSelect.value;
+
+
+        const selectedIndex =
+            routeSelect.value;
+
+
+        const routes =
+            routesByState[selectedState];
+
+
+        if (
+            selectedIndex === "" ||
+            !routes ||
+            !routes[selectedIndex]
+        ) {
+
+            sourceInput.value = "";
+
+            destinationInput.value = "";
+
+            selectedRouteBox.style.display =
+                "none";
+
+            return;
+
+        }
+
+
+        const selectedRoute =
+            routes[selectedIndex];
+
+
+        /*
+            These values are submitted to Flask.
+
+            IMPORTANT:
+            We are keeping the existing
+            name="source" and
+            name="destination"
+            fields.
+
+            Therefore the existing
+            payment system continues
+            to work.
+        */
+
+        sourceInput.value =
+            selectedRoute.source;
+
+
+        destinationInput.value =
+            selectedRoute.destination;
+
+
+        selectedRouteText.textContent =
+            selectedRoute.source +
+            " → " +
+            selectedRoute.destination;
+
+
+        selectedRouteBox.style.display =
+            "block";
+
+    });
+
+
+
+    /*
+
+        START DATE
+
+        Prevent selecting a previous date.
+
+    */
+
+    const startDate =
+        document.getElementById("start_date");
+
+
+    const today =
+        new Date();
+
+
+    const year =
+        today.getFullYear();
+
+
+    const month =
+        String(today.getMonth() + 1)
+        .padStart(2, "0");
+
+
+    const day =
+        String(today.getDate())
+        .padStart(2, "0");
+
+
+    startDate.min =
+        year + "-" + month + "-" + day;
+
+
+
+    /*
+
+        FORM VALIDATION
+
+    */
+
+    document.querySelector("form")
+        .addEventListener("submit", function(event) {
+
+
+            if (
+                sourceInput.value === "" ||
+                destinationInput.value === ""
+            ) {
+
+                event.preventDefault();
+
+
+                alert(
+                    "Please select a state and bus route."
+                );
+
+
+                return;
+
+            }
+
+
+            if (
+                sourceInput.value ===
+                destinationInput.value
+            ) {
+
+                event.preventDefault();
+
+
+                alert(
+                    "Starting point and destination cannot be the same."
+                );
+
+            }
+
+        });
 
 </script>
-```
+
 
 </body>
 

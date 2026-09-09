@@ -12,7 +12,12 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, date, timedelta
 import random
 from io import BytesIO
+import base64
+import qrcode
+from IndiaLocations import INDIA_LOCATIONS
 
+
+from reportlab.platypus import Image as ReportLabImage
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import (
@@ -579,6 +584,16 @@ CITY_COORDINATES = {
 
     "pondicherry": (11.9416, 79.8083)
 }
+# =========================================================
+# ADD LOCATIONS FROM INDIA LOCATIONS FILE
+# =========================================================
+
+for state, locations in INDIA_LOCATIONS.items():
+    for location, details in locations.items():
+        CITY_COORDINATES[location.lower()] = (
+            details["latitude"],
+            details["longitude"]
+        )
 
 
 # =========================================================
@@ -836,7 +851,61 @@ def get_route_price(
         distance,
         pass_type
     )
+# =========================================================
+# BUS TICKET PRICE TIERS
+# =========================================================
+# Ticket price is calculated per passenger based on
+# the distance between source and destination.
+#
+# Existing BUS PASS prices above are NOT changed.
+# =========================================================
 
+TICKET_PRICE_TIERS = [
+
+    # maximum distance (km), ticket price per passenger
+
+    (20, 20),
+
+    (50, 40),
+
+    (100, 70),
+
+    (200, 120),
+
+    (400, 180),
+
+    (700, 250),
+
+    (1000, 350),
+
+    (float("inf"), 450)
+
+]
+
+
+def get_ticket_price(
+    source,
+    destination
+):
+
+    distance = calculate_distance(
+        source,
+        destination
+    )
+
+    if distance is None or distance <= 0:
+        return None
+
+    for (
+        maximum_distance,
+        ticket_price
+    ) in TICKET_PRICE_TIERS:
+
+        if distance <= maximum_distance:
+
+            return ticket_price
+
+    return None
 
 # =========================================================
 # CREATE DATABASE TABLES
@@ -1822,7 +1891,7 @@ def application_success(application_id):
         )
 
     return render_template(
-        "application_success.html",
+        "success.html",
         application=application,
         payment=payment_record,
         amount=amount
@@ -2061,34 +2130,55 @@ def download_pass(application_id):
             20
         )
     )
+# =========================================================
+# QR CODE FOR BUS TICKET VERIFICATION
+# =========================================================
 
-    story.append(
-        Paragraph(
-            "This is a digitally generated bus pass.",
-            normal_style
-        )
+    qr_data = (
+        f"TICKET ID: {booking.booking_id}\n"
+        f"PASSENGER: {user.name}\n"
+        f"FROM: {booking.source}\n"
+        f"TO: {booking.destination}\n"
+        f"BUS: {booking.bus}\n"
+        f"DATE: {booking.travel_date}\n"
+        f"PASSENGERS: {booking.passengers}\n"
+        f"SEAT: {booking.seat_type}\n"
+        f"FARE: Rs.{ticket_price}\n"
+        f"TOTAL: Rs.{total_amount}\n"
+        f"STATUS: {booking.booking_status}"
     )
 
-    document.build(
-        story
+    # Create QR code
+    qr = qrcode.QRCode(
+        version=None,
+        error_correction=qrcode.constants.ERROR_CORRECT_M,
+        box_size=10,
+        border=4
     )
 
-    buffer.seek(0)
+    qr.add_data(qr_data)
 
-    return send_file(
+    qr.make(fit=True)
 
-        buffer,
-
-        as_attachment=True,
-
-        download_name=(
-            f"bus_pass_{application.id}.pdf"
-        ),
-
-        mimetype="application/pdf"
-
+    qr_image = qr.make_image(
+        fill_color="black",
+        back_color="white"
     )
 
+    # Convert QR image to memory
+    qr_buffer = BytesIO()
+
+    qr_image.save(
+        qr_buffer,
+        format="PNG"
+    )
+
+    qr_buffer.seek(0)
+
+    # Convert QR image to Base64
+    qr_code = base64.b64encode(
+        qr_buffer.getvalue()
+    ).decode("utf-8")  
 
 # =========================================================
 # BOOK TICKET
@@ -2100,183 +2190,241 @@ def download_pass(application_id):
 )
 def book_ticket():
 
+    # -----------------------------------------------------
+    # Check user login
+    # -----------------------------------------------------
     if "user_id" not in session:
+        return redirect(url_for("login"))
 
-        return redirect(
-            url_for("login")
+    # -----------------------------------------------------
+    # Get logged-in user
+    # -----------------------------------------------------
+    user = User.query.get(session["user_id"])
+
+    if not user:
+        session.clear()
+        return redirect(url_for("login"))
+
+    # -----------------------------------------------------
+    # GET REQUEST
+    # -----------------------------------------------------
+    if request.method == "GET":
+
+        return render_template(
+            "book_ticket.html",
+            cities=sorted(CITY_COORDINATES.keys()),
+            india_locations=INDIA_LOCATIONS,
+            user=user
         )
 
-    if request.method == "POST":
+    # =====================================================
+    # POST REQUEST
+    # =====================================================
 
-        source = request.form.get(
-            "source",
-            ""
-        ).strip()
+    # -----------------------------------------------------
+    # Get form data
+    # -----------------------------------------------------
+    source = request.form.get("source", "").strip()
+    destination = request.form.get("destination", "").strip()
+    travel_date = request.form.get("travel_date", "").strip()
+    bus = request.form.get("bus", "").strip()
+    passengers = request.form.get("passengers", "").strip()
+    seat_type = request.form.get("seat_type", "").strip()
 
-        destination = request.form.get(
-            "destination",
-            ""
-        ).strip()
+    # -----------------------------------------------------
+    # Validate source
+    # -----------------------------------------------------
+    if not source:
+        return render_template(
+            "book_ticket.html",
+            cities=sorted(CITY_COORDINATES.keys()),
+            india_locations=INDIA_LOCATIONS,
+            user=user,
+            error="Please select a source location."
+        )
 
-        travel_date = request.form.get(
-            "travel_date",
-            ""
-        ).strip()
+    # -----------------------------------------------------
+    # Validate destination
+    # -----------------------------------------------------
+    if not destination:
+        return render_template(
+            "book_ticket.html",
+            cities=sorted(CITY_COORDINATES.keys()),
+            india_locations=INDIA_LOCATIONS,
+            user=user,
+            error="Please select a destination location."
+        )
 
-        bus = request.form.get(
-            "bus",
-            ""
-        ).strip()
+    # -----------------------------------------------------
+    # Prevent same source and destination
+    # -----------------------------------------------------
+    if source.lower() == destination.lower():
+        return render_template(
+            "book_ticket.html",
+            cities=sorted(CITY_COORDINATES.keys()),
+            india_locations=INDIA_LOCATIONS,
+            user=user,
+            error="Source and destination cannot be the same."
+        )
 
-        passengers = request.form.get(
-            "passengers",
-            ""
-        ).strip()
+    # -----------------------------------------------------
+    # Validate travel date
+    # -----------------------------------------------------
+    if not travel_date:
+        return render_template(
+            "book_ticket.html",
+            cities=sorted(CITY_COORDINATES.keys()),
+            india_locations=INDIA_LOCATIONS,
+            user=user,
+            error="Please select a travel date."
+        )
 
-        seat_type = request.form.get(
-            "seat_type",
-            ""
-        ).strip()
-
-        if not all([
-            source,
-            destination,
+    try:
+        selected_date = datetime.strptime(
             travel_date,
-            bus,
-            passengers,
-            seat_type
-        ]):
+            "%Y-%m-%d"
+        ).date()
 
-            return render_template(
-                "book_ticket.html",
-                cities=sorted(
-                    CITY_COORDINATES.keys()
-                ),
-                error="Please fill in all fields."
-            )
-
-        if source.lower() == destination.lower():
-
-            return render_template(
-                "book_ticket.html",
-                cities=sorted(
-                    CITY_COORDINATES.keys()
-                ),
-                error="Source and destination cannot be the same."
-            )
-
-        try:
-
-            travel_date_value = datetime.strptime(
-                travel_date,
-                "%Y-%m-%d"
-            ).date()
-
-            if travel_date_value < date.today():
-
-                return render_template(
-                    "book_ticket.html",
-                    cities=sorted(
-                        CITY_COORDINATES.keys()
-                    ),
-                    error="Travel date cannot be in the past."
-                )
-
-        except ValueError:
-
-            return render_template(
-                "book_ticket.html",
-                cities=sorted(
-                    CITY_COORDINATES.keys()
-                ),
-                error="Please select a valid travel date."
-            )
-
-        try:
-
-            passengers_value = int(
-                passengers
-            )
-
-            if passengers_value <= 0:
-
-                raise ValueError
-
-        except ValueError:
-
-            return render_template(
-                "book_ticket.html",
-                cities=sorted(
-                    CITY_COORDINATES.keys()
-                ),
-                error="Number of passengers must be greater than zero."
-            )
-
-        booking_id = (
-
-            "BUS"
-
-            +
-            datetime.now().strftime(
-                "%Y%m%d%H%M%S"
-            )
-
-            +
-            str(
-                random.randint(
-                    100,
-                    999
-                )
-            )
-
+    except ValueError:
+        return render_template(
+            "book_ticket.html",
+            cities=sorted(CITY_COORDINATES.keys()),
+            india_locations=INDIA_LOCATIONS,
+            user=user,
+            error="Invalid travel date."
         )
 
-        new_booking = TicketBooking(
-
-            booking_id=booking_id,
-
-            user_id=session["user_id"],
-
-            source=source,
-
-            destination=destination,
-
-            travel_date=travel_date,
-
-            bus=bus,
-
-            passengers=passengers_value,
-
-            seat_type=seat_type,
-
-            booking_status="Confirmed",
-
-            booking_date=datetime.now().strftime(
-                "%d-%m-%Y %I:%M %p"
-            )
-
+    # -----------------------------------------------------
+    # Prevent past travel dates
+    # -----------------------------------------------------
+    if selected_date < date.today():
+        return render_template(
+            "book_ticket.html",
+            cities=sorted(CITY_COORDINATES.keys()),
+            india_locations=INDIA_LOCATIONS,
+            user=user,
+            error="Travel date cannot be in the past."
         )
 
-        db.session.add(
-            new_booking
+    # -----------------------------------------------------
+    # Validate bus
+    # -----------------------------------------------------
+    if not bus:
+        return render_template(
+            "book_ticket.html",
+            cities=sorted(CITY_COORDINATES.keys()),
+            india_locations=INDIA_LOCATIONS,
+            user=user,
+            error="Please select a bus."
         )
 
-        db.session.commit()
+    # -----------------------------------------------------
+    # Validate passengers
+    # -----------------------------------------------------
+    try:
+        passengers = int(passengers)
 
-        return redirect(
-            url_for(
-                "booking_confirmation",
-                booking_id=new_booking.booking_id
+    except (ValueError, TypeError):
+        return render_template(
+            "book_ticket.html",
+            cities=sorted(CITY_COORDINATES.keys()),
+            india_locations=INDIA_LOCATIONS,
+            user=user,
+            error="Please enter a valid number of passengers."
+        )
+
+    if passengers <= 0:
+        return render_template(
+            "book_ticket.html",
+            cities=sorted(CITY_COORDINATES.keys()),
+            india_locations=INDIA_LOCATIONS,
+            user=user,
+            error="Number of passengers must be at least 1."
+        )
+
+    if passengers > 5:
+        return render_template(
+            "book_ticket.html",
+            cities=sorted(CITY_COORDINATES.keys()),
+            india_locations=INDIA_LOCATIONS,
+            user=user,
+            error="Maximum 5 passengers are allowed per booking."
+        )
+
+    # -----------------------------------------------------
+    # Validate seat type
+    # -----------------------------------------------------
+    if not seat_type:
+        return render_template(
+            "book_ticket.html",
+            cities=sorted(CITY_COORDINATES.keys()),
+            india_locations=INDIA_LOCATIONS,
+            user=user,
+            error="Please select a seat type."
+        )
+
+    # -----------------------------------------------------
+    # Calculate ticket price
+    # -----------------------------------------------------
+    ticket_price = get_ticket_price(
+        source,
+        destination
+    )
+
+    if ticket_price is None:
+        return render_template(
+            "book_ticket.html",
+            cities=sorted(CITY_COORDINATES.keys()),
+            india_locations=INDIA_LOCATIONS,
+            user=user,
+            error=(
+                "Ticket fare is not available for this route. "
+                "Please select valid locations."
             )
         )
 
-    return render_template(
-        "book_ticket.html",
-        cities=sorted(
-            CITY_COORDINATES.keys()
+    # -----------------------------------------------------
+    # Generate unique booking ID
+    # -----------------------------------------------------
+    booking_id = (
+        "BUS"
+        + datetime.now().strftime("%Y%m%d%H%M%S")
+        + str(random.randint(100, 999))
+    )
+
+    # -----------------------------------------------------
+    # Create ticket booking
+    # -----------------------------------------------------
+    new_booking = TicketBooking(
+        booking_id=booking_id,
+        user_id=user.id,
+        source=source,
+        destination=destination,
+        travel_date=travel_date,
+        bus=bus,
+        passengers=passengers,
+        seat_type=seat_type,
+        booking_status="Confirmed",
+        booking_date=datetime.now().strftime(
+            "%Y-%m-%d %H:%M:%S"
         )
     )
 
+    # -----------------------------------------------------
+    # Save booking
+    # -----------------------------------------------------
+    db.session.add(new_booking)
+    db.session.commit()
+
+    # -----------------------------------------------------
+    # Redirect to booking confirmation
+    # -----------------------------------------------------
+    return redirect(
+        url_for(
+            "booking_confirmation",
+            booking_id=booking_id
+        )
+    )
 
 # =========================================================
 # BOOKING CONFIRMATION
@@ -2308,12 +2456,114 @@ def booking_confirmation(booking_id):
         session["user_id"]
     )
 
-    return render_template(
-        "booking_confirmation.html",
-        booking=booking,
-        user=user
+    # -----------------------------------------------------
+    # CALCULATE TICKET PRICE
+    # -----------------------------------------------------
+
+    ticket_price = get_ticket_price(
+        booking.source,
+        booking.destination
     )
 
+    if ticket_price is None:
+
+        ticket_price = 0
+
+    total_amount = (
+        ticket_price
+        *
+        booking.passengers
+    )
+
+    # -----------------------------------------------------
+    # GENERATE TICKET QR CODE
+    # -----------------------------------------------------
+
+    qr_data = (
+
+        f"Cloud Bus Pass System\n"
+
+        f"Ticket ID: {booking.booking_id}\n"
+
+        f"Passenger: {user.name}\n"
+
+        f"Route: {booking.source} -> "
+        f"{booking.destination}\n"
+
+        f"Bus: {booking.bus}\n"
+
+        f"Travel Date: {booking.travel_date}\n"
+
+        f"Passengers: {booking.passengers}\n"
+
+        f"Seat Type: {booking.seat_type}\n"
+
+        f"Fare per Passenger: "
+        f"Rs.{ticket_price}\n"
+
+        f"Total Amount: "
+        f"Rs.{total_amount}\n"
+
+        f"Status: {booking.booking_status}"
+    )
+
+    qr = qrcode.QRCode(
+
+        version=1,
+
+        error_correction=(
+            qrcode.constants.ERROR_CORRECT_M
+        ),
+
+        box_size=8,
+
+        border=4
+    )
+
+    qr.add_data(
+        qr_data
+    )
+
+    qr.make(
+        fit=True
+    )
+
+    qr_image = qr.make_image(
+        fill_color="black",
+        back_color="white"
+    )
+
+    qr_buffer = BytesIO()
+
+    qr_image.save(
+        qr_buffer,
+        format="PNG"
+    )
+
+    qr_buffer.seek(0)
+
+    qr_code = base64.b64encode(
+        qr_buffer.getvalue()
+    ).decode("utf-8")
+
+    # -----------------------------------------------------
+    # SEND PRICE + QR CODE TO TEMPLATE
+    # -----------------------------------------------------
+
+    return render_template(
+
+        "booking_confirmation.html",
+
+        booking=booking,
+
+        user=user,
+
+        ticket_price=ticket_price,
+
+        total_amount=total_amount,
+
+        qr_code=qr_code
+    )
 
 # =========================================================
 # CANCEL TICKET

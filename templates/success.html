@@ -1,152 +1,283 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful - Cloud Bus Pass System</title>
 
-    <title>Application Submitted</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
+        .success-container {
+            width: 100%;
+            max-width: 700px;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            text-align: center;
+        }
+
+        .success-icon {
+            width: 85px;
+            height: 85px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: #dcfce7;
+            color: #16a34a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: #166534;
+            margin-bottom: 10px;
+            font-size: 30px;
+        }
+
+        .message {
+            color: #555;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .details {
+            text-align: left;
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .details h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1e293b;
+            font-size: 21px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .value {
+            color: #1e293b;
+            text-align: right;
+            font-weight: 500;
+        }
+
+        .status {
+            color: #16a34a;
+            font-weight: bold;
+        }
+
+        .amount {
+            color: #2563eb;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 13px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        @media (max-width: 600px) {
+            .success-container {
+                padding: 25px 18px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            .detail-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .value {
+                text-align: left;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <div class="container success-container">
+<div class="success-container">
 
-        <div class="success-icon">
-            ✓
-        </div>
+    <div class="success-icon">
+        ✓
+    </div>
 
-        <h1>
-            Application Submitted!
-        </h1>
+    <h1>Payment Successful!</h1>
 
-        <p class="success-message">
-            Your bus pass application has been submitted successfully.
-        </p>
+    <p class="message">
+        Your bus pass application and payment have been submitted successfully.
+    </p>
 
+    <div class="details">
 
-        <!-- APPLICATION DETAILS -->
+        <h2>Application Details</h2>
 
-        <div class="pass-card">
-
-            <h2>
-                🚌 Bus Pass Application
-            </h2>
-
-            <p>
-                <strong>Application ID:</strong>
+        <div class="detail-row">
+            <span class="label">Application ID</span>
+            <span class="value">
                 {{ application.id }}
-            </p>
-
-            <p>
-                <strong>Name:</strong>
-                {{ application.name }}
-            </p>
-
-            <p>
-                <strong>Age:</strong>
-                {{ application.age }}
-            </p>
-
-            <p>
-                <strong>Gender:</strong>
-                {{ application.gender }}
-            </p>
-
-            <p>
-                <strong>Route:</strong>
-                {{ application.source }}
-                →
-                {{ application.destination }}
-            </p>
-
-            <p>
-                <strong>Pass Type:</strong>
-                {{ application.pass_type }}
-            </p>
-
-            <p>
-                <strong>Start Date:</strong>
-                {{ application.start_date }}
-            </p>
-
-            <p>
-                <strong>Status:</strong>
-
-                <span class="status">
-                    Submitted
-                </span>
-
-            </p>
-
+            </span>
         </div>
 
+        <div class="detail-row">
+            <span class="label">Name</span>
+            <span class="value">
+                {{ application.name }}
+            </span>
+        </div>
 
-        <!-- PAYMENT RECEIPT -->
+        <div class="detail-row">
+            <span class="label">Route</span>
+            <span class="value">
+                {{ application.source }} → {{ application.destination }}
+            </span>
+        </div>
+
+        <div class="detail-row">
+            <span class="label">Pass Type</span>
+            <span class="value">
+                {{ application.pass_type }}
+            </span>
+        </div>
+
+        <div class="detail-row">
+            <span class="label">Start Date</span>
+            <span class="value">
+                {{ application.start_date }}
+            </span>
+        </div>
 
         {% if payment %}
 
-        <div class="pass-card"
-             style="margin-top: 20px;">
+        <div class="detail-row">
+            <span class="label">Amount Paid</span>
+            <span class="value amount">
+                ₹{{ payment.amount }}
+            </span>
+        </div>
 
-            <h2>
-                💳 Payment Receipt
-            </h2>
-
-            <p>
-                <strong>Amount Paid:</strong>
-                ₹{{ "%.2f"|format(payment.amount) }}
-            </p>
-
-            <p>
-                <strong>Payment Method:</strong>
+        <div class="detail-row">
+            <span class="label">Payment Method</span>
+            <span class="value">
                 {{ payment.payment_method }}
-            </p>
+            </span>
+        </div>
 
-            <p>
-                <strong>Transaction ID:</strong>
+        <div class="detail-row">
+            <span class="label">Transaction ID</span>
+            <span class="value">
                 {{ payment.transaction_id }}
-            </p>
+            </span>
+        </div>
 
-            <p>
-                <strong>Payment Date:</strong>
-                {{ payment.payment_date }}
-            </p>
-
-            <p>
-                <strong>Payment Status:</strong>
-
-                <span class="status">
-                    {{ payment.payment_status }}
-                </span>
-
-            </p>
-
+        <div class="detail-row">
+            <span class="label">Payment Status</span>
+            <span class="value status">
+                {{ payment.payment_status }}
+            </span>
         </div>
 
         {% endif %}
 
+        <div class="detail-row">
+            <span class="label">Application Status</span>
+            <span class="value">
+                Submitted
+            </span>
+        </div>
 
-        <!-- DASHBOARD -->
+    </div>
 
-        <a class="dashboard-button"
-           href="/dashboard">
+    <div class="buttons">
 
-            Go to Dashboard
+        <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+            📊 Go to Dashboard
+        </a>
 
+        <a href="{{ url_for('apply') }}" class="btn btn-secondary">
+            🚌 Apply for Another Pass
         </a>
 
     </div>
 
-</body>
+</div>
 
+</body>
 </html>
-```

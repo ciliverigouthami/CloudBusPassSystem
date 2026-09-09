@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,13 +6,591 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <title>Ticket Confirmed - Cloud Bus Pass System</title>
+    <title>Booking Confirmation - Cloud Bus Pass</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef4ff,
+                    #f8fbff
+                );
+
+            min-height: 100vh;
+
+            padding: 30px 15px;
+
+            color: #222;
+        }
+
+
+        /* ==============================
+           HEADER
+        ============================== */
+
+        .header {
+
+            max-width: 900px;
+
+            margin: auto;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 25px;
+
+            gap: 15px;
+        }
+
+
+        .header h1 {
+
+            font-size: 28px;
+
+            color: #173b8f;
+        }
+
+
+        .dashboard-btn {
+
+            text-decoration: none;
+
+            background: #173b8f;
+
+            color: white;
+
+            padding: 11px 18px;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+
+        .dashboard-btn:hover {
+
+            background: #0f2b6b;
+        }
+
+
+        /* ==============================
+           SUCCESS MESSAGE
+        ============================== */
+
+        .success-message {
+
+            max-width: 900px;
+
+            margin: 0 auto 20px;
+
+            background: #e9f9ee;
+
+            border: 1px solid #b8e7c5;
+
+            color: #176b2c;
+
+            padding: 15px 20px;
+
+            border-radius: 10px;
+
+            text-align: center;
+
+            font-size: 16px;
+
+            font-weight: bold;
+        }
+
+
+        /* ==============================
+           TICKET CARD
+        ============================== */
+
+        .ticket-card {
+
+            max-width: 900px;
+
+            margin: auto;
+
+            background: white;
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 10px 35px
+                rgba(0, 0, 0, 0.10);
+
+            border: 1px solid #e2e8f0;
+        }
+
+
+        .ticket-header {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #173b8f,
+                    #2864d7
+                );
+
+            color: white;
+
+            padding: 25px;
+
+            text-align: center;
+        }
+
+
+        .ticket-header h2 {
+
+            font-size: 24px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .ticket-header p {
+
+            opacity: 0.9;
+
+            font-size: 14px;
+        }
+
+
+        /* ==============================
+           TICKET DETAILS
+        ============================== */
+
+        .ticket-details {
+
+            padding: 25px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+        }
+
+
+        .ticket-detail {
+
+            background: #f7f9fc;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            border-left:
+                4px solid #2864d7;
+        }
+
+
+        .ticket-detail span {
+
+            display: block;
+
+            font-size: 11px;
+
+            color: #687386;
+
+            font-weight: bold;
+
+            margin-bottom: 6px;
+
+            letter-spacing: 0.4px;
+        }
+
+
+        .ticket-detail strong {
+
+            display: block;
+
+            font-size: 16px;
+
+            color: #1d2939;
+
+            word-break: break-word;
+        }
+
+
+        /* ==============================
+           PRICE SECTION
+        ============================== */
+
+        .price-section {
+
+            margin: 0 25px 25px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f5f9ff,
+                    #edf4ff
+                );
+
+            border:
+                1px solid #cbdcff;
+
+            border-radius: 12px;
+
+            padding: 20px;
+        }
+
+
+        .price-section h3 {
+
+            color: #173b8f;
+
+            margin-bottom: 15px;
+
+            text-align: center;
+
+            font-size: 18px;
+        }
+
+
+        .price-row {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 10px 0;
+
+            border-bottom:
+                1px solid #dce5f5;
+
+            font-size: 15px;
+        }
+
+
+        .price-row:last-child {
+
+            border-bottom: none;
+
+            padding-bottom: 0;
+        }
+
+
+        .price-row.total {
+
+            margin-top: 8px;
+
+            padding-top: 15px;
+
+            border-top:
+                2px solid #b9cbed;
+
+            border-bottom: none;
+
+            font-size: 19px;
+
+            font-weight: bold;
+
+            color: #173b8f;
+        }
+
+
+        /* ==============================
+           QR CODE
+        ============================== */
+
+        .ticket-qr-section {
+
+            text-align: center;
+
+            padding: 10px 25px 30px;
+
+            border-top:
+                1px dashed #cbd5e1;
+        }
+
+
+        .ticket-qr-section h3 {
+
+            color: #173b8f;
+
+            font-size: 19px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .ticket-qr-section p {
+
+            color: #667085;
+
+            font-size: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .ticket-qr-code {
+
+            width: 220px;
+
+            height: 220px;
+
+            object-fit: contain;
+
+            padding: 10px;
+
+            background: white;
+
+            border:
+                1px solid #d9e0ea;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 5px 18px
+                rgba(0, 0, 0, 0.08);
+        }
+
+
+        /* ==============================
+           STATUS
+        ============================== */
+
+        .status-confirmed {
+
+            color: #16803c !important;
+        }
+
+
+        .status-cancelled {
+
+            color: #d92d20 !important;
+        }
+
+
+        /* ==============================
+           FOOTER
+        ============================== */
+
+        .ticket-footer {
+
+            padding: 20px 25px 25px;
+
+            text-align: center;
+
+            border-top:
+                1px solid #edf0f5;
+        }
+
+
+        .print-btn {
+
+            border: none;
+
+            background: #173b8f;
+
+            color: white;
+
+            padding: 12px 25px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            margin-right: 8px;
+        }
+
+
+        .print-btn:hover {
+
+            background: #0f2b6b;
+        }
+
+
+        .back-btn {
+
+            display: inline-block;
+
+            text-decoration: none;
+
+            background: #eef2f7;
+
+            color: #344054;
+
+            padding: 12px 25px;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+        }
+
+
+        .back-btn:hover {
+
+            background: #e1e7ef;
+        }
+
+
+        .footer-note {
+
+            margin-top: 15px;
+
+            color: #98a2b3;
+
+            font-size: 12px;
+        }
+
+
+        /* ==============================
+           PRINT
+        ============================== */
+
+        @media print {
+
+            body {
+
+                background: white;
+
+                padding: 0;
+            }
+
+
+            .header,
+            .success-message,
+            .print-btn,
+            .back-btn {
+
+                display: none !important;
+            }
+
+
+            .ticket-card {
+
+                max-width: 100%;
+
+                box-shadow: none;
+
+                border: 1px solid #ddd;
+            }
+
+
+            .ticket-qr-code {
+
+                width: 180px;
+
+                height: 180px;
+            }
+        }
+
+
+        /* ==============================
+           MOBILE
+        ============================== */
+
+        @media (max-width: 650px) {
+
+            body {
+
+                padding: 15px 10px;
+            }
+
+
+            .header {
+
+                flex-direction: column;
+
+                text-align: center;
+            }
+
+
+            .header h1 {
+
+                font-size: 23px;
+            }
+
+
+            .ticket-details {
+
+                grid-template-columns: 1fr;
+
+                padding: 18px;
+            }
+
+
+            .price-section {
+
+                margin:
+                    0 18px 20px;
+            }
+
+
+            .ticket-qr-section {
+
+                padding:
+                    10px 18px 25px;
+            }
+
+
+            .ticket-qr-code {
+
+                width: 190px;
+
+                height: 190px;
+            }
+
+
+            .ticket-footer {
+
+                padding:
+                    18px;
+            }
+
+
+            .print-btn,
+            .back-btn {
+
+                width: 100%;
+
+                display: block;
+
+                margin:
+                    0 0 10px;
+            }
+        }
+
+    </style>
 
 </head>
 
@@ -19,93 +598,70 @@
 <body>
 
 
-    <!-- HEADER -->
+    <!-- ==============================
+         HEADER
+    ============================== -->
 
-    <header class="main-header">
+    <div class="header">
 
-        <div class="header-content">
+        <h1>
+            🚌 Cloud Bus Pass
+        </h1>
 
-            <div class="logo">
-                🚌
-                <span>Cloud Bus Pass</span>
-            </div>
+        <a
+            href="{{ url_for('dashboard') }}"
+            class="dashboard-btn"
+        >
+            ← Dashboard
+        </a>
 
-            <a href="/dashboard"
-               class="header-logout">
-
-                ← Dashboard
-
-            </a>
-
-        </div>
-
-    </header>
+    </div>
 
 
+    <!-- ==============================
+         SUCCESS MESSAGE
+    ============================== -->
 
-    <!-- MAIN -->
+    <div class="success-message">
 
-    <main class="booking-confirmation-main">
+        ✅ Your bus ticket has been booked successfully!
+
+    </div>
 
 
-        <!-- SUCCESS MESSAGE -->
+    <!-- ==============================
+         TICKET CARD
+    ============================== -->
 
-        <div class="booking-success">
+    <div class="ticket-card">
 
-            <div class="booking-success-icon">
-                ✓
-            </div>
 
-            <h1>
-                Ticket Booked Successfully!
-            </h1>
+        <!-- TICKET HEADER -->
+
+        <div class="ticket-header">
+
+            <h2>
+                🎟️ Ticket Confirmation
+            </h2>
 
             <p>
-                Your bus ticket has been confirmed.
+                Cloud Bus Pass System
             </p>
 
         </div>
 
 
+        <!-- ==============================
+             TICKET DETAILS
+        ============================== -->
 
-        <!-- TICKET -->
-
-        <div class="ticket-card">
-
-
-            <!-- TICKET HEADER -->
-
-            <div class="ticket-card-header">
-
-                <div>
-
-                    <span class="ticket-company">
-                        CLOUD BUS PASS SYSTEM
-                    </span>
-
-                    <h2>
-                        🚌 BUS TICKET
-                    </h2>
-
-                </div>
+        <div class="ticket-details">
 
 
-                <div class="ticket-confirmed">
-
-                    ✓ CONFIRMED
-
-                </div>
-
-            </div>
-
-
-
-            <!-- BOOKING ID -->
-
-            <div class="ticket-booking-id">
+            <div class="ticket-detail">
 
                 <span>
-                    BOOKING ID
+                    🎫 BOOKING ID
                 </span>
 
                 <strong>
@@ -115,13 +671,10 @@
             </div>
 
 
-
-            <!-- PASSENGER -->
-
-            <div class="ticket-passenger">
+            <div class="ticket-detail">
 
                 <span>
-                    PASSENGER
+                    👤 PASSENGER
                 </span>
 
                 <strong>
@@ -131,150 +684,142 @@
             </div>
 
 
-
-            <!-- ROUTE -->
-
-            <div class="ticket-route">
-
-                <div class="ticket-location">
-
-                    <span>
-                        FROM
-                    </span>
-
-                    <strong>
-                        {{ booking.source }}
-                    </strong>
-
-                </div>
-
-
-                <div class="ticket-arrow">
-                    🚌 →
-                </div>
-
-
-                <div class="ticket-location">
-
-                    <span>
-                        TO
-                    </span>
-
-                    <strong>
-                        {{ booking.destination }}
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- DETAILS -->
-
-            <div class="ticket-details">
-
-
-                <div class="ticket-detail">
-
-                    <span>
-                        📅 TRAVEL DATE
-                    </span>
-
-                    <strong>
-                        {{ booking.travel_date }}
-                    </strong>
-
-                </div>
-
-
-                <div class="ticket-detail">
-
-                    <span>
-                        🚌 BUS
-                    </span>
-
-                    <strong>
-                        {{ booking.bus }}
-                    </strong>
-
-                </div>
-
-
-                <div class="ticket-detail">
-
-                    <span>
-                        👥 PASSENGERS
-                    </span>
-
-                    <strong>
-                        {{ booking.passengers }}
-                    </strong>
-
-                </div>
-
-
-                <div class="ticket-detail">
-
-                    <span>
-                        💺 SEAT TYPE
-                    </span>
-
-                    <strong>
-                        {{ booking.seat_type }}
-                    </strong>
-
-                </div>
-
-
-            </div>
-
-
-
-            <!-- BOOKING STATUS -->
-
-            <div class="ticket-status-row">
-
-                <div>
-
-                    <span>
-                        BOOKING STATUS
-                    </span>
-
-                    <strong>
-                        🟢 {{ booking.booking_status }}
-                    </strong>
-
-                </div>
-
-
-                <div>
-
-                    <span>
-                        BOOKED ON
-                    </span>
-
-                    <strong>
-                        {{ booking.booking_date }}
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- FOOTER -->
-
-            <div class="ticket-card-footer">
+            <div class="ticket-detail">
 
                 <span>
-                    🎟️ Please keep this booking ID for reference.
+                    📍 SOURCE
                 </span>
 
+                <strong>
+                    {{ booking.source }}
+                </strong>
+
+            </div>
+
+
+            <div class="ticket-detail">
+
                 <span>
-                    {{ booking.booking_id }}
+                    🏁 DESTINATION
                 </span>
+
+                <strong>
+                    {{ booking.destination }}
+                </strong>
+
+            </div>
+
+
+            <div class="ticket-detail">
+
+                <span>
+                    📅 TRAVEL DATE
+                </span>
+
+                <strong>
+                    {{ booking.travel_date }}
+                </strong>
+
+            </div>
+
+
+            <div class="ticket-detail">
+
+                <span>
+                    🚌 BUS
+                </span>
+
+                <strong>
+                    {{ booking.bus }}
+                </strong>
+
+            </div>
+
+
+            <div class="ticket-detail">
+
+                <span>
+                    👥 PASSENGERS
+                </span>
+
+                <strong>
+                    {{ booking.passengers }}
+                </strong>
+
+            </div>
+
+
+            <div class="ticket-detail">
+
+                <span>
+                    💺 SEAT TYPE
+                </span>
+
+                <strong>
+                    {{ booking.seat_type }}
+                </strong>
+
+            </div>
+
+
+            <div class="ticket-detail">
+
+                <span>
+                    💰 PRICE / PASSENGER
+                </span>
+
+                <strong>
+                    ₹{{ ticket_price }}
+                </strong>
+
+            </div>
+
+
+            <div class="ticket-detail">
+
+                <span>
+                    💳 TOTAL AMOUNT
+                </span>
+
+                <strong>
+                    ₹{{ total_amount }}
+                </strong>
+
+            </div>
+
+
+            <div class="ticket-detail">
+
+                <span>
+                    📌 BOOKING STATUS
+                </span>
+
+                {% if booking.booking_status == "Cancelled" %}
+
+                    <strong class="status-cancelled">
+                        ❌ Cancelled
+                    </strong>
+
+                {% else %}
+
+                    <strong class="status-confirmed">
+                        🟢 Confirmed
+                    </strong>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="ticket-detail">
+
+                <span>
+                    🕒 BOOKING DATE
+                </span>
+
+                <strong>
+                    {{ booking.booking_date }}
+                </strong>
 
             </div>
 
@@ -282,66 +827,117 @@
         </div>
 
 
+        <!-- ==============================
+             PRICE SUMMARY
+        ============================== -->
 
-        <!-- ACTIONS -->
+        <div class="price-section">
 
-        <div class="ticket-confirmation-actions">
+            <h3>
+                💰 Fare Summary
+            </h3>
 
-            <a href="/dashboard"
-               class="ticket-dashboard-button">
 
-                ← Back to Dashboard
+            <div class="price-row">
 
-            </a>
+                <span>
+                    Price per passenger
+                </span>
 
+                <strong>
+                    ₹{{ ticket_price }}
+                </strong>
+
+            </div>
+
+
+            <div class="price-row">
+
+                <span>
+                    Number of passengers
+                </span>
+
+                <strong>
+                    {{ booking.passengers }}
+                </strong>
+
+            </div>
+
+
+            <div class="price-row total">
+
+                <span>
+                    Total Amount
+                </span>
+
+                <strong>
+                    ₹{{ total_amount }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==============================
+             TICKET QR CODE
+        ============================== -->
+
+        <div class="ticket-qr-section">
+
+            <h3>
+                🎫 TICKET QR CODE
+            </h3>
+
+            <p>
+                Scan this QR code to verify your ticket details.
+            </p>
+
+
+            <img
+                src="data:image/png;base64,{{ qr_code }}"
+                alt="Ticket QR Code"
+                class="ticket-qr-code"
+            >
+
+        </div>
+
+
+        <!-- ==============================
+             FOOTER
+        ============================== -->
+
+        <div class="ticket-footer">
 
             <button
                 onclick="window.print()"
-                class="ticket-print-button">
-
+                class="print-btn"
+            >
                 🖨️ Print Ticket
-
             </button>
 
-        </div>
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="back-btn"
+            >
+                ← Back to Dashboard
+            </a>
 
 
-    </main>
+            <p class="footer-note">
 
+                Please keep this ticket and QR code for your journey.
 
-
-    <!-- FOOTER -->
-
-    <footer class="main-footer">
-
-        <div class="footer-content">
-
-            <div>
-
-                <strong>
-                    🚌 Cloud Bus Pass System
-                </strong>
-
-                <p>
-                    Smart and simple digital bus pass management.
-                </p>
-
-            </div>
-
-
-            <div class="footer-right">
-
-                <p>
-                    © 2026 Cloud Bus Pass System
-                </p>
-
-            </div>
+            </p>
 
         </div>
 
-    </footer>
+
+    </div>
 
 
 </body>
 
 </html>
+```
